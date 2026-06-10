@@ -52,7 +52,9 @@ Doxyfile
 
 Full project documentation and Doxygen-generated documentation:
 
-[Insert Documentation Link Here]
+https://tylerlum40portfolio.github.io/Projectile-Tracking-System/#repository
+
+https://tylerlum40portfolio.github.io/Projectile-Tracking-System/docs/index.html
 
 ## Author
 
