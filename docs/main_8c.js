@@ -1,0 +1,26 @@
+var main_8c =
+[
+    [ "PID_t", "struct_p_i_d__t.html", "struct_p_i_d__t" ],
+    [ "LASER_MAX_RANGE_CM", "main_8c.html#a8d0ae14d04049ff7d00e0c1437b638ce", null ],
+    [ "PAN_KD", "main_8c.html#ade787b2d8c878babd83a28f9eb67192c", null ],
+    [ "PAN_KI", "main_8c.html#a0c3f95ec2b25071412e49f0387c14e10", null ],
+    [ "PAN_KP", "main_8c.html#aa1b17518a1f83dfd13c42ca8607a9081", null ],
+    [ "PID_INTEGRAL_MAX", "main_8c.html#ae117fb137fb65aaf0a8a519d58acab92", null ],
+    [ "PID_OUTPUT_MAX", "main_8c.html#a93d058baf12897338d42592755529956", null ],
+    [ "TILT_KD", "main_8c.html#aea8202006de40c0049cb96a5d9bac312", null ],
+    [ "TILT_KI", "main_8c.html#ab8ad60f5050b2070c1b565cb21050d33", null ],
+    [ "TILT_KP", "main_8c.html#a522876a9f7c2b5d71c57c65f28637e18", null ],
+    [ "Error_Handler", "main_8c.html#a1730ffe1e560465665eb47d9264826f9", null ],
+    [ "HAL_TIM_PeriodElapsedCallback", "main_8c.html#a8a3b0ad512a6e6c6157440b68d395eac", null ],
+    [ "main", "main_8c.html#a840291bc02cba5474a4cb46a9b9566fe", null ],
+    [ "SystemClock_Config", "main_8c.html#a70af21c671abfcc773614a9a4f63d920", null ],
+    [ "camera_target", "main_8c.html#a94fc25219656969460e04497db93e593", null ],
+    [ "control_tick", "main_8c.html#a6a85aa787d064a506a585b655eab7833", null ],
+    [ "hspi1", "main_8c.html#a9c6222bae4d0328dd843ae099623b40b", null ],
+    [ "htim3", "main_8c.html#aac3d2c59ee0e3bbae1b99529a154eb62", null ],
+    [ "htim4", "main_8c.html#a85788cec5a97ee377e4ee2e74f026484", null ],
+    [ "huart2", "main_8c.html#aa9479c261d65eecedd3d9582f7f0f89c", null ],
+    [ "lidar", "main_8c.html#a33e0f1af39c3d56b176ee6961a566a0d", null ],
+    [ "pan_pid", "main_8c.html#a025f8a07d969dbf12586704b3d1ffa37", null ],
+    [ "tilt_pid", "main_8c.html#aeb9f97484d486b68884f5cd5c2d59fd9", null ]
+];
