@@ -554,7 +554,7 @@ footer{
       </p>
       <div class="hero-actions">
         <a class="button-link" href="#video">View Demo Video</a>
-        <a class="button-link" href="#docs">View Documentation</a>
+        <a class="button-link" href="docs/index.html" target="_blank">View Documentation</a>
         <a class="button-link" href="#repository">Open Repository</a>
       </div>
     </div>
@@ -837,18 +837,73 @@ The LiDAR driver produces valid distance data. The tracking logic interprets tha
 <h2>Detailed Code Documentation</h2>
 <div class="card">
 <p>
-The files below link to Doxygen-generated documentation pages and raw source files. Update the file paths after exporting your final Doxygen HTML folder.</p>
-<h3>Main and Driver Files</h3>
+The links below open the Doxygen-generated documentation pages for the main project source files. These pages document the project drivers, data structures, function descriptions, parameters, return values, and source-code references.
+</p>
+
+<h3>Main Application and Driver Documentation</h3>
 <ul>
-<li><a href="html/main_8c.html" target="_blank" class="doc-button"><span class="name">main.c</span></a> – Initializes peripherals and runs the main tracking loop. <a href="main.c" target="_blank">[Open raw file]</a></li>
-<li><a href="html/_li_dar_8h.html" target="_blank" class="doc-button"><span class="name">LiDar.h</span></a> – Defines the LiDAR API, macros, struct, and status enum. <a href="LiDar.h" target="_blank">[Open raw file]</a></li>
-<li><a href="html/_li_dar_8c.html" target="_blank" class="doc-button"><span class="name">LiDar.c</span></a> – Implements LiDAR frame reading and object detection. <a href="LiDar.c" target="_blank">[Open raw file]</a></li>
-<li><a href="html/motor__driver_8h.html" target="_blank" class="doc-button"><span class="name">motor_driver.h</span></a> – Declares motor driver functions. <a href="motor_driver.h" target="_blank">[Open raw file]</a></li>
-<li><a href="html/motor__driver_8c.html" target="_blank" class="doc-button"><span class="name">motor_driver.c</span></a> – Implements pan and tilt motor control. <a href="motor_driver.c" target="_blank">[Open raw file]</a></li>
+<li>
+<a href="docs/main_8c.html" target="_blank" class="doc-button"><span class="name">main.c</span></a>
+– Main control loop, PID tracking logic, peripheral initialization, and system integration.
+</li>
+
+<li>
+<a href="docs/_li_d_a_r_8h.html" target="_blank" class="doc-button"><span class="name">LiDAR.h</span></a>
+– Public LiDAR driver interface, measurement structure, status enum, valid range macros, and function prototypes.
+</li>
+
+<li>
+<a href="docs/_li_d_a_r_8c.html" target="_blank" class="doc-button"><span class="name">LiDAR.c</span></a>
+– TF-Luna LiDAR UART frame reading, checksum validation, object detection, and status reporting.
+</li>
+
+<li>
+<a href="docs/motor__driver_8h.html" target="_blank" class="doc-button"><span class="name">motor_driver.h</span></a>
+– Public motor driver interface for pan and tilt motor commands.
+</li>
+
+<li>
+<a href="docs/motor__driver_8c.html" target="_blank" class="doc-button"><span class="name">motor_driver.c</span></a>
+– PWM setup, motor direction control, pan motor command, tilt motor command, and stop behavior.
+</li>
+
+<li>
+<a href="docs/pixy2__camera_8h.html" target="_blank" class="doc-button"><span class="name">pixy2_camera.h</span></a>
+– Pixy2 camera target structures, constants, and function prototypes.
+</li>
+
+<li>
+<a href="docs/pixy2__camera_8c.html" target="_blank" class="doc-button"><span class="name">pixy2_camera.c</span></a>
+– SPI communication, Pixy2 block reading, target selection, and pixel error calculation.
+</li>
+
+<li>
+<a href="docs/_laser_8h.html" target="_blank" class="doc-button"><span class="name">Laser.h</span></a>
+– Public laser module interface.
+</li>
+
+<li>
+<a href="docs/_laser_8c.html" target="_blank" class="doc-button"><span class="name">Laser.c</span></a>
+– Laser GPIO control, on/off/toggle behavior, and blink test function.
+</li>
 </ul>
-<h3>Doxygen Documentation</h3>
+
+<h3>Complete Doxygen Documentation</h3>
 <p>
-The Doxygen documentation provides file references, function descriptions, macros, enums, and source-code navigation. The most useful pages for this project are the LiDAR driver page and motor driver page because they explain the public API used by the tracking logic.</p>
+The full Doxygen site includes file references, source-code navigation, function documentation, data structures, and generated links back to the original code.
+</p>
+
+<a href="docs/index.html" target="_blank" class="repo-button">
+View Full Doxygen Documentation
+</a>
+
+<a href="docs/files.html" target="_blank" class="repo-button">
+View File List
+</a>
+
+<a href="docs/annotated.html" target="_blank" class="repo-button">
+View Data Structures
+</a>
 </div>
 </section>
 
@@ -950,10 +1005,18 @@ The full project repository contains the source code, Doxygen documentation, ima
 </div>
 <h3>Key Doxygen Pages</h3>
 <div class="file-links">
-<a href="html/index.html" target="_blank" class="repo-button">Doxygen Home</a>
-<a href="html/_li_dar_8h.html" target="_blank" class="repo-button">LiDar.h docs</a>
-<a href="html/_li_dar_8c.html" target="_blank" class="repo-button">LiDar.c docs</a>
-<a href="html/motor__driver_8c.html" target="_blank" class="repo-button">motor_driver.c docs</a>
+<a href="docs/index.html" target="_blank" class="repo-button">Doxygen Home</a>
+<a href="docs/files.html" target="_blank" class="repo-button">File List</a>
+<a href="docs/annotated.html" target="_blank" class="repo-button">Data Structures</a>
+<a href="docs/main_8c.html" target="_blank" class="repo-button">main.c docs</a>
+<a href="docs/_li_d_a_r_8h.html" target="_blank" class="repo-button">LiDAR.h docs</a>
+<a href="docs/_li_d_a_r_8c.html" target="_blank" class="repo-button">LiDAR.c docs</a>
+<a href="docs/motor__driver_8h.html" target="_blank" class="repo-button">motor_driver.h docs</a>
+<a href="docs/motor__driver_8c.html" target="_blank" class="repo-button">motor_driver.c docs</a>
+<a href="docs/pixy2__camera_8h.html" target="_blank" class="repo-button">pixy2_camera.h docs</a>
+<a href="docs/pixy2__camera_8c.html" target="_blank" class="repo-button">pixy2_camera.c docs</a>
+<a href="docs/_laser_8h.html" target="_blank" class="repo-button">Laser.h docs</a>
+<a href="docs/_laser_8c.html" target="_blank" class="repo-button">Laser.c docs</a>
 </div>
 <h3>Repository Link</h3>
 <a href="https://github.com/tylerlum40portfolio/Projectile-Tracking-System" target="_blank" class="repo-button">Open Full GitHub Repository</a>
