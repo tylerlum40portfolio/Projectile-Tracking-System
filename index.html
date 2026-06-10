@@ -753,6 +753,32 @@ The STM32 controller receives LiDAR data over UART and controls the motors throu
 </div>
 </section>
 
+<section id="diagrams">
+<h2>System Diagrams and Additional Analysis</h2>
+
+<div class="card">
+
+<h3>Electrical Schematic</h3>
+
+<div class="figure">
+<img src="images/PCB Diagram.png" alt="Electrical Schematic">
+<p class="figure-caption">
+Figure 6. Complete electrical schematic showing power regulation, STM32 connections, motor drivers, LiDAR interface, Pixy2 interface, laser driver circuitry, USB communication, and SWD programming connections.
+</p>
+</div>
+
+<h3>System Wiring Diagram</h3>
+
+<div class="figure">
+<img src="images/PCB Wired Up.png" alt="Wiring Diagram">
+<p class="figure-caption">
+Figure 7. High-level wiring diagram illustrating all electrical connections between the PCB, sensors, laser module, pan/tilt assembly, power supply, and programming interface.
+</p>
+</div>
+
+</div>
+</section>
+  
 <section id="analysis">
 <h2>Representative Plots and Tuning Results</h2>
 <div class="card">
@@ -955,25 +981,98 @@ The pan and tilt motors responded to signed speed commands from the firmware. Th
 
 <section id="media">
 <h2>Photos and Figures</h2>
+
 <div class="card">
+
 <p>
-This section provides visual documentation of the final prototype, including the sensor mounting, pan/tilt mechanism, wiring, PCB, and testing setup.</p>
-<h3>Included Visual Documentation</h3>
-<ul>
-<li>Full assembled projectile tracking system</li>
-<li>LiDAR sensor mounting</li>
-<li>Pan/tilt motor mechanism</li>
-<li>STM32 and PCB wiring</li>
-<li>Testing setup</li>
-</ul>
+The following figures document the design, fabrication, assembly, and integration of the projectile tracking system.
+</p>
+
+<h3>Custom PCB Development</h3>
+
 <div class="figure-row">
-  <div class="figure"><img src="images/full_system.jpg" alt="Full projectile tracker"><p class="figure-caption">Figure 8. Overall view of the completed projectile tracking prototype.</p></div>
-  <div class="figure"><img src="images/lidar_mount.jpg" alt="LiDAR mount"><p class="figure-caption">Figure 9. LiDAR sensor mounting location and alignment.</p></div>
+
+<div class="figure">
+<img src="images/PCB Top View 3D.png" alt="PCB Top View">
+<p class="figure-caption">
+Figure 8. Three-dimensional rendering of the PCB top side showing component placement and connector locations.
+</p>
 </div>
+
+<div class="figure">
+<img src="images/PCB Bottom View 3D.png" alt="PCB Bottom View">
+<p class="figure-caption">
+Figure 9. PCB bottom side showing trace routing and board layout.
+</p>
+</div>
+
+</div>
+
 <div class="figure-row">
-  <div class="figure"><img src="images/pan_tilt.jpg" alt="Pan tilt mechanism"><p class="figure-caption">Figure 10. Pan/tilt mechanism used to aim the tracker.</p></div>
-  <div class="figure"><img src="images/pcb_wiring.jpg" alt="PCB wiring"><p class="figure-caption">Figure 11. STM32, PCB, and wiring connections for the tracking system.</p></div>
+
+<div class="figure">
+<img src="images/Bare PCB.jpeg" alt="Bare PCB">
+<p class="figure-caption">
+Figure 10. Manufactured PCB after assembly of major electronic components.
+</p>
 </div>
+
+<div class="figure">
+<img src="images/PCB Mounted.jpeg" alt="Mounted PCB">
+<p class="figure-caption">
+Figure 11. Custom PCB mounted and integrated into the tracking system.
+</p>
+</div>
+
+</div>
+
+<h3>Custom Mechanical Components</h3>
+
+<div class="figure-row">
+
+<div class="figure">
+<img src="images/Camera Mount.png" alt="Camera Mount">
+<p class="figure-caption">
+Figure 12. Custom Pixy2 camera mounting bracket designed in CAD.
+</p>
+</div>
+
+<div class="figure">
+<img src="images/Lidar Mount.png" alt="LiDAR Mount">
+<p class="figure-caption">
+Figure 13. Custom LiDAR mounting bracket designed to position the TF-Luna sensor.
+</p>
+</div>
+
+</div>
+
+<div class="figure-row">
+
+<div class="figure">
+<img src="images/Laser Mount.png" alt="Laser Mount">
+<p class="figure-caption">
+Figure 14. Laser mounting bracket used to align the aiming laser with the tracking system.
+</p>
+</div>
+
+<div class="figure">
+<img src="images/PCB 3D Mount.png" alt="PCB Mount">
+<p class="figure-caption">
+Figure 15. Structural bracket used to mount the custom PCB to the system frame.
+</p>
+</div>
+
+</div>
+
+<h3>Complete System Assembly</h3>
+
+<div class="figure">
+<img src="images/Full 3D Assembly.png" alt="Full Assembly">
+<p class="figure-caption">
+Figure 16. Full CAD assembly of the projectile tracking system including the pan/tilt mechanism, sensors, PCB, and supporting structure.
+</p>
+</div>
+
 </div>
 </section>
 
