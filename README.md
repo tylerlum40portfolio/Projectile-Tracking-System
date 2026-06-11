@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Pan-Tilt Laser Tracker is an STM32F411-based embedded system that automatically detects and tracks a target using computer vision and distance sensing. The system uses a Pixy2 camera to identify a colored target, a TF-Luna LiDAR sensor to measure distance, and two DC motors to control pan and tilt motion. A laser module is used to indicate the tracked target location.
+The Pan-Tilt Laser Tracker is an STM32F411-based embedded system that automatically detects and tracks a target using computer vision and distance sensing. The system uses a Pixy2 camera to identify a colored target, a TF-Luna LiDAR sensor to measure distance, and two servo motors to control pan and tilt motion. A laser module is used to indicate the tracked target location.
 
 This project was developed for ME 405 Mechatronics at California Polytechnic State University, San Luis Obispo.
 
