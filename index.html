@@ -800,24 +800,152 @@ Figure 7. High-level wiring diagram illustrating all electrical connections betw
 </div>
 </section>
   
-<section id="analysis">
-<h2>Representative Plots and Tuning Results</h2>
+<section id="calculations">
+<h2>Tracking Calculations and Sensor Processing</h2>
+
 <div class="card">
+
 <p>
-Testing focused on verifying that the LiDAR measurements were reasonable, that the target detection logic responded correctly, and that the pan/tilt motors could move toward the target without excessive oscillation.
+Several calculations were performed within the firmware to convert raw sensor measurements into motor commands capable of tracking a moving target. The tracking system combines camera-based target detection, LiDAR distance sensing, and closed-loop motor control to continuously align the pan-tilt mechanism with the detected target.
 </p>
-<h3>LiDAR Distance vs Time</h3>
+
+<h3>Pixel Error Calculation</h3>
+
 <p>
-This plot shows the measured LiDAR distance as an object moves through the sensor field of view. It helps show whether the sensor can detect a projectile consistently and whether the software properly rejects invalid frames.</p>
-<div class="figure"><img src="images/lidar_distance_plot.png" alt="LiDAR distance vs time plot"><p class="figure-caption">Figure 3. LiDAR distance measurement over time during a representative test.</p></div>
-<h3>Tracking Error vs Time</h3>
+The Pixy2 camera reports the target location in image coordinates. The firmware calculates horizontal and vertical tracking error by comparing the detected target position to the center of the image:
+</p>
+
+<pre>
+x_error = target_x - image_center_x;
+y_error = target_y - image_center_y;
+</pre>
+
 <p>
-This plot shows the difference between the desired target position and the measured or estimated target position. Lower error indicates better tracking performance.</p>
-<div class="figure"><img src="images/tracking_error_plot.png" alt="Tracking error plot"><p class="figure-caption">Figure 4. Tracking error over time during target motion.</p></div>
-<h3>Pan/Tilt Motor Response</h3>
+These error values indicate how far the target is from the desired aiming location and serve as the primary inputs to the tracking controller.
+</p>
+
+<h3>Proportional Tracking Control</h3>
+
 <p>
-This plot shows how the pan and tilt commands change as the system attempts to follow the projectile. It was useful for tuning motor response and preventing unstable motion.</p>
-<div class="figure"><img src="images/motor_response_plot.png" alt="Pan tilt response plot"><p class="figure-caption">Figure 5. Pan and tilt motor response during tracking.</p></div>
+The tracking errors are converted into motor commands using proportional control:
+</p>
+
+<pre>
+pan_command  = Kp_pan * x_error;
+tilt_command = Kp_tilt * y_error;
+</pre>
+
+<p>
+Larger tracking errors generate larger motor commands while smaller errors generate finer positioning adjustments. This allows the system to smoothly move toward the target rather than making abrupt motions.
+</p>
+
+<h3>Motor Command Limiting</h3>
+
+<p>
+To prevent excessive actuator motion and improve stability, motor commands are limited to a maximum allowable value:
+</p>
+
+<pre>
+if (command > MAX_SPEED)
+{
+    command = MAX_SPEED;
+}
+
+if (command < -MAX_SPEED)
+{
+    command = -MAX_SPEED;
+}
+</pre>
+
+<p>
+This prevents aggressive motion that could cause overshoot, oscillation, or mechanical stress.
+</p>
+
+<h3>PWM Duty Cycle Generation</h3>
+
+<p>
+The motor driver converts the commanded speed into a PWM duty cycle:
+</p>
+
+<pre>
+PWM = abs(command);
+</pre>
+
+<p>
+The sign of the command determines motor direction while the magnitude determines motor speed. PWM outputs are generated using STM32 Timer 4 channels.
+</p>
+
+<h3>LiDAR Distance Validation</h3>
+
+<p>
+The TF-Luna LiDAR provides distance measurements that are validated before being used by the tracking algorithm:
+</p>
+
+<pre>
+20 cm < distance < 800 cm
+</pre>
+
+<p>
+Measurements outside this range are rejected to prevent invalid tracking behavior and false detections.
+</p>
+
+<h3>Signal Strength Validation</h3>
+
+<p>
+LiDAR signal strength is also checked before accepting a measurement:
+</p>
+
+<pre>
+signal_strength > minimum_threshold
+</pre>
+
+<p>
+This helps reject weak reflections and unreliable measurements that could negatively affect tracking performance.
+</p>
+
+<h3>Target Validation Logic</h3>
+
+<p>
+The firmware combines camera and LiDAR information to determine whether a valid target is present:
+</p>
+
+<pre>
+valid_target =
+    camera_detected &&
+    valid_distance &&
+    valid_signal_strength;
+</pre>
+
+<p>
+Only valid targets are used for tracking calculations and motor control.
+</p>
+
+<h3>Closed-Loop Tracking Behavior</h3>
+
+<p>
+The complete tracking process operates as a real-time feedback loop:
+</p>
+
+<pre>
+Target Position
+       ↓
+Pixy2 Detection
+       ↓
+Pixel Error Calculation
+       ↓
+Control Calculation
+       ↓
+Motor Command
+       ↓
+Pan/Tilt Motion
+       ↓
+Updated Target Position
+</pre>
+
+<p>
+This continuous feedback loop allows the system to adjust motor commands in real time and maintain alignment with a moving target.
+</p>
+
 </div>
 </section>
 
