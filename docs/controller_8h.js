@@ -1,5 +1,6 @@
 var controller_8h =
 [
+    [ "INC_CONTROLLER_H_", "controller_8h.html#ab6389bd08a9f486c4713f5db9561f3ac", null ],
     [ "Controller_ApplyPanLimits", "controller_8h.html#a4f8829e0f2e17c454a068a2159283daa", null ],
     [ "Controller_ApplyTiltLimits", "controller_8h.html#a601fa8885d2d1e065e1f3df71c9b6b2e", null ],
     [ "Controller_HomeTiltBlocking", "controller_8h.html#ad5d981e9431650f2a7b74f1e08e999f4", null ],

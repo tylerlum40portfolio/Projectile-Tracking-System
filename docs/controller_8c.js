@@ -1,6 +1,7 @@
 var controller_8c =
 [
     [ "PID_t", "struct_p_i_d__t.html", "struct_p_i_d__t" ],
+    [ "CONTROLLER_H", "controller_8c.html#ab5fb650332a7a04e276972e733c98780", null ],
     [ "LASER_MAX_RANGE_CM", "controller_8c.html#a8d0ae14d04049ff7d00e0c1437b638ce", null ],
     [ "PAN_KD", "controller_8c.html#ade787b2d8c878babd83a28f9eb67192c", null ],
     [ "PAN_KI", "controller_8c.html#a0c3f95ec2b25071412e49f0387c14e10", null ],
