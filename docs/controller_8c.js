@@ -1,0 +1,25 @@
+var controller_8c =
+[
+    [ "PID_t", "struct_p_i_d__t.html", "struct_p_i_d__t" ],
+    [ "LASER_MAX_RANGE_CM", "controller_8c.html#a8d0ae14d04049ff7d00e0c1437b638ce", null ],
+    [ "PAN_KD", "controller_8c.html#ade787b2d8c878babd83a28f9eb67192c", null ],
+    [ "PAN_KI", "controller_8c.html#a0c3f95ec2b25071412e49f0387c14e10", null ],
+    [ "PAN_KP", "controller_8c.html#aa1b17518a1f83dfd13c42ca8607a9081", null ],
+    [ "PID_INTEGRAL_MAX", "controller_8c.html#ae117fb137fb65aaf0a8a519d58acab92", null ],
+    [ "PID_OUTPUT_MAX", "controller_8c.html#a93d058baf12897338d42592755529956", null ],
+    [ "TILT_KD", "controller_8c.html#aea8202006de40c0049cb96a5d9bac312", null ],
+    [ "TILT_KI", "controller_8c.html#ab8ad60f5050b2070c1b565cb21050d33", null ],
+    [ "TILT_KP", "controller_8c.html#a522876a9f7c2b5d71c57c65f28637e18", null ],
+    [ "Controller_ApplyPanLimits", "controller_8c.html#a4f8829e0f2e17c454a068a2159283daa", null ],
+    [ "Controller_ApplyTiltLimits", "controller_8c.html#a601fa8885d2d1e065e1f3df71c9b6b2e", null ],
+    [ "Controller_HomeTiltBlocking", "controller_8c.html#ad5d981e9431650f2a7b74f1e08e999f4", null ],
+    [ "Controller_HomeTiltStep", "controller_8c.html#a6618ee9b8d4a45a05221a933ffad0d78", null ],
+    [ "Controller_Init", "controller_8c.html#ae7bfee76ca5e9ebb528b6620e7c1bb89", null ],
+    [ "Controller_ReadPanADC", "controller_8c.html#a78a66767dcab753ef855f16b5c6e7f1d", null ],
+    [ "Controller_ReadTiltADC", "controller_8c.html#a8d34c91da7fa9ab7dde074c3ba003c10", null ],
+    [ "Controller_Reset", "controller_8c.html#af50c0077229c0dd3dbba32cf5afeecf2", null ],
+    [ "Controller_SearchMode", "controller_8c.html#a30266b567c5b57329a4daf33010bf30c", null ],
+    [ "Controller_TiltIsHome", "controller_8c.html#a0b4d9c206e59b22e3d9c1ff89d283743", null ],
+    [ "Controller_Update", "controller_8c.html#a436b185ce394730363969dc41b81c86f", null ],
+    [ "hadc1", "controller_8c.html#a22b804736f5648d52f639b2647d4ed13", null ]
+];

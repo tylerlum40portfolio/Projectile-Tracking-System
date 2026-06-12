@@ -118,8 +118,430 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('controller_8c.
   <div class="headertitle"><div class="title">controller.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
+<div class="textblock"><code>#include &quot;<a class="el" href="controller_8h_source.html">controller.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="motor__driver_8h_source.html">motor_driver.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_laser_8h_source.html">Laser.h</a>&quot;</code><br />
+</div>
 <p><a href="controller_8c_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:PID_5Ft" id="r_PID_5Ft"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_p_i_d__t.html">PID_t</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:aa1b17518a1f83dfd13c42ca8607a9081" id="r_aa1b17518a1f83dfd13c42ca8607a9081"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aa1b17518a1f83dfd13c42ca8607a9081">PAN_KP</a>&#160;&#160;&#160;20.0f</td></tr>
+<tr class="memitem:a0c3f95ec2b25071412e49f0387c14e10" id="r_a0c3f95ec2b25071412e49f0387c14e10"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a0c3f95ec2b25071412e49f0387c14e10">PAN_KI</a>&#160;&#160;&#160;0.0f</td></tr>
+<tr class="memitem:ade787b2d8c878babd83a28f9eb67192c" id="r_ade787b2d8c878babd83a28f9eb67192c"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ade787b2d8c878babd83a28f9eb67192c">PAN_KD</a>&#160;&#160;&#160;5.0f</td></tr>
+<tr class="memitem:a522876a9f7c2b5d71c57c65f28637e18" id="r_a522876a9f7c2b5d71c57c65f28637e18"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a522876a9f7c2b5d71c57c65f28637e18">TILT_KP</a>&#160;&#160;&#160;20.0f</td></tr>
+<tr class="memitem:ab8ad60f5050b2070c1b565cb21050d33" id="r_ab8ad60f5050b2070c1b565cb21050d33"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ab8ad60f5050b2070c1b565cb21050d33">TILT_KI</a>&#160;&#160;&#160;0.0f</td></tr>
+<tr class="memitem:aea8202006de40c0049cb96a5d9bac312" id="r_aea8202006de40c0049cb96a5d9bac312"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aea8202006de40c0049cb96a5d9bac312">TILT_KD</a>&#160;&#160;&#160;5.0f</td></tr>
+<tr class="memitem:ae117fb137fb65aaf0a8a519d58acab92" id="r_ae117fb137fb65aaf0a8a519d58acab92"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ae117fb137fb65aaf0a8a519d58acab92">PID_INTEGRAL_MAX</a>&#160;&#160;&#160;500.0f</td></tr>
+<tr class="memitem:a93d058baf12897338d42592755529956" id="r_a93d058baf12897338d42592755529956"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a93d058baf12897338d42592755529956">PID_OUTPUT_MAX</a>&#160;&#160;&#160;4999.0f</td></tr>
+<tr class="memitem:a8d0ae14d04049ff7d00e0c1437b638ce" id="r_a8d0ae14d04049ff7d00e0c1437b638ce"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a8d0ae14d04049ff7d00e0c1437b638ce">LASER_MAX_RANGE_CM</a>&#160;&#160;&#160;300u</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ae7bfee76ca5e9ebb528b6620e7c1bb89" id="r_ae7bfee76ca5e9ebb528b6620e7c1bb89"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ae7bfee76ca5e9ebb528b6620e7c1bb89">Controller_Init</a> (void)</td></tr>
+<tr class="memitem:af50c0077229c0dd3dbba32cf5afeecf2" id="r_af50c0077229c0dd3dbba32cf5afeecf2"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af50c0077229c0dd3dbba32cf5afeecf2">Controller_Reset</a> (void)</td></tr>
+<tr class="memitem:a78a66767dcab753ef855f16b5c6e7f1d" id="r_a78a66767dcab753ef855f16b5c6e7f1d"><td class="memItemLeft">uint16_t&#160;</td><td class="memItemRight"><a class="el" href="#a78a66767dcab753ef855f16b5c6e7f1d">Controller_ReadPanADC</a> (void)</td></tr>
+<tr class="memitem:a8d34c91da7fa9ab7dde074c3ba003c10" id="r_a8d34c91da7fa9ab7dde074c3ba003c10"><td class="memItemLeft">uint16_t&#160;</td><td class="memItemRight"><a class="el" href="#a8d34c91da7fa9ab7dde074c3ba003c10">Controller_ReadTiltADC</a> (void)</td></tr>
+<tr class="memitem:a0b4d9c206e59b22e3d9c1ff89d283743" id="r_a0b4d9c206e59b22e3d9c1ff89d283743"><td class="memItemLeft">uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a0b4d9c206e59b22e3d9c1ff89d283743">Controller_TiltIsHome</a> (void)</td></tr>
+<tr class="memitem:a6618ee9b8d4a45a05221a933ffad0d78" id="r_a6618ee9b8d4a45a05221a933ffad0d78"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6618ee9b8d4a45a05221a933ffad0d78">Controller_HomeTiltStep</a> (void)</td></tr>
+<tr class="memitem:ad5d981e9431650f2a7b74f1e08e999f4" id="r_ad5d981e9431650f2a7b74f1e08e999f4"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad5d981e9431650f2a7b74f1e08e999f4">Controller_HomeTiltBlocking</a> (uint32_t timeout_ms)</td></tr>
+<tr class="memitem:a601fa8885d2d1e065e1f3df71c9b6b2e" id="r_a601fa8885d2d1e065e1f3df71c9b6b2e"><td class="memItemLeft">int16_t&#160;</td><td class="memItemRight"><a class="el" href="#a601fa8885d2d1e065e1f3df71c9b6b2e">Controller_ApplyTiltLimits</a> (int16_t tilt_cmd)</td></tr>
+<tr class="memitem:a4f8829e0f2e17c454a068a2159283daa" id="r_a4f8829e0f2e17c454a068a2159283daa"><td class="memItemLeft">int16_t&#160;</td><td class="memItemRight"><a class="el" href="#a4f8829e0f2e17c454a068a2159283daa">Controller_ApplyPanLimits</a> (int16_t pan_cmd)</td></tr>
+<tr class="memitem:a30266b567c5b57329a4daf33010bf30c" id="r_a30266b567c5b57329a4daf33010bf30c"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a30266b567c5b57329a4daf33010bf30c">Controller_SearchMode</a> (void)</td></tr>
+<tr class="memitem:a436b185ce394730363969dc41b81c86f" id="r_a436b185ce394730363969dc41b81c86f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a436b185ce394730363969dc41b81c86f">Controller_Update</a> (<a class="el" href="struct_pixy_target__t.html">PixyTarget_t</a> *camera_target, <a class="el" href="struct_lidar__t.html">Lidar_t</a> *lidar)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a22b804736f5648d52f639b2647d4ed13" id="r_a22b804736f5648d52f639b2647d4ed13"><td class="memItemLeft">ADC_HandleTypeDef&#160;</td><td class="memItemRight"><a class="el" href="#a22b804736f5648d52f639b2647d4ed13">hadc1</a></td></tr>
+</table>
+<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
+<a id="a8d0ae14d04049ff7d00e0c1437b638ce" name="a8d0ae14d04049ff7d00e0c1437b638ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d0ae14d04049ff7d00e0c1437b638ce">&#9670;&#160;</a></span>LASER_MAX_RANGE_CM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LASER_MAX_RANGE_CM&#160;&#160;&#160;300u</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00023">23</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="ade787b2d8c878babd83a28f9eb67192c" name="ade787b2d8c878babd83a28f9eb67192c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade787b2d8c878babd83a28f9eb67192c">&#9670;&#160;</a></span>PAN_KD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PAN_KD&#160;&#160;&#160;5.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00013">13</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="a0c3f95ec2b25071412e49f0387c14e10" name="a0c3f95ec2b25071412e49f0387c14e10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c3f95ec2b25071412e49f0387c14e10">&#9670;&#160;</a></span>PAN_KI</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PAN_KI&#160;&#160;&#160;0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00012">12</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="aa1b17518a1f83dfd13c42ca8607a9081" name="aa1b17518a1f83dfd13c42ca8607a9081"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1b17518a1f83dfd13c42ca8607a9081">&#9670;&#160;</a></span>PAN_KP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PAN_KP&#160;&#160;&#160;20.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00011">11</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="ae117fb137fb65aaf0a8a519d58acab92" name="ae117fb137fb65aaf0a8a519d58acab92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae117fb137fb65aaf0a8a519d58acab92">&#9670;&#160;</a></span>PID_INTEGRAL_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PID_INTEGRAL_MAX&#160;&#160;&#160;500.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00019">19</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="a93d058baf12897338d42592755529956" name="a93d058baf12897338d42592755529956"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93d058baf12897338d42592755529956">&#9670;&#160;</a></span>PID_OUTPUT_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PID_OUTPUT_MAX&#160;&#160;&#160;4999.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00020">20</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="aea8202006de40c0049cb96a5d9bac312" name="aea8202006de40c0049cb96a5d9bac312"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea8202006de40c0049cb96a5d9bac312">&#9670;&#160;</a></span>TILT_KD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TILT_KD&#160;&#160;&#160;5.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00017">17</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="ab8ad60f5050b2070c1b565cb21050d33" name="ab8ad60f5050b2070c1b565cb21050d33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8ad60f5050b2070c1b565cb21050d33">&#9670;&#160;</a></span>TILT_KI</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TILT_KI&#160;&#160;&#160;0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00016">16</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="a522876a9f7c2b5d71c57c65f28637e18" name="a522876a9f7c2b5d71c57c65f28637e18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a522876a9f7c2b5d71c57c65f28637e18">&#9670;&#160;</a></span>TILT_KP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TILT_KP&#160;&#160;&#160;20.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00015">15</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a4f8829e0f2e17c454a068a2159283daa" name="a4f8829e0f2e17c454a068a2159283daa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f8829e0f2e17c454a068a2159283daa">&#9670;&#160;</a></span>Controller_ApplyPanLimits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t Controller_ApplyPanLimits </td>
+          <td>(</td>
+          <td class="paramtype">int16_t</td>          <td class="paramname"><span class="paramname"><em>pan_cmd</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00186">186</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="a601fa8885d2d1e065e1f3df71c9b6b2e" name="a601fa8885d2d1e065e1f3df71c9b6b2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a601fa8885d2d1e065e1f3df71c9b6b2e">&#9670;&#160;</a></span>Controller_ApplyTiltLimits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t Controller_ApplyTiltLimits </td>
+          <td>(</td>
+          <td class="paramtype">int16_t</td>          <td class="paramname"><span class="paramname"><em>tilt_cmd</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00169">169</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="ad5d981e9431650f2a7b74f1e08e999f4" name="ad5d981e9431650f2a7b74f1e08e999f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5d981e9431650f2a7b74f1e08e999f4">&#9670;&#160;</a></span>Controller_HomeTiltBlocking()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Controller_HomeTiltBlocking </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>timeout_ms</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00144">144</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="a6618ee9b8d4a45a05221a933ffad0d78" name="a6618ee9b8d4a45a05221a933ffad0d78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6618ee9b8d4a45a05221a933ffad0d78">&#9670;&#160;</a></span>Controller_HomeTiltStep()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Controller_HomeTiltStep </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00121">121</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="ae7bfee76ca5e9ebb528b6620e7c1bb89" name="ae7bfee76ca5e9ebb528b6620e7c1bb89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7bfee76ca5e9ebb528b6620e7c1bb89">&#9670;&#160;</a></span>Controller_Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Controller_Init </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00052">52</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="a78a66767dcab753ef855f16b5c6e7f1d" name="a78a66767dcab753ef855f16b5c6e7f1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78a66767dcab753ef855f16b5c6e7f1d">&#9670;&#160;</a></span>Controller_ReadPanADC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t Controller_ReadPanADC </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00095">95</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="a8d34c91da7fa9ab7dde074c3ba003c10" name="a8d34c91da7fa9ab7dde074c3ba003c10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d34c91da7fa9ab7dde074c3ba003c10">&#9670;&#160;</a></span>Controller_ReadTiltADC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t Controller_ReadTiltADC </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00100">100</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="af50c0077229c0dd3dbba32cf5afeecf2" name="af50c0077229c0dd3dbba32cf5afeecf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af50c0077229c0dd3dbba32cf5afeecf2">&#9670;&#160;</a></span>Controller_Reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Controller_Reset </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00061">61</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="a30266b567c5b57329a4daf33010bf30c" name="a30266b567c5b57329a4daf33010bf30c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30266b567c5b57329a4daf33010bf30c">&#9670;&#160;</a></span>Controller_SearchMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Controller_SearchMode </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00206">206</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="a0b4d9c206e59b22e3d9c1ff89d283743" name="a0b4d9c206e59b22e3d9c1ff89d283743"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b4d9c206e59b22e3d9c1ff89d283743">&#9670;&#160;</a></span>Controller_TiltIsHome()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t Controller_TiltIsHome </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00107">107</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a id="a436b185ce394730363969dc41b81c86f" name="a436b185ce394730363969dc41b81c86f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a436b185ce394730363969dc41b81c86f">&#9670;&#160;</a></span>Controller_Update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Controller_Update </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_pixy_target__t.html">PixyTarget_t</a> *</td>          <td class="paramname"><span class="paramname"><em>camera_target</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_lidar__t.html">Lidar_t</a> *</td>          <td class="paramname"><span class="paramname"><em>lidar</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="controller_8c_source.html#l00234">234</a> of file <a class="el" href="controller_8c_source.html">controller.c</a>.</p>
+
+</div>
+</div>
+<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
+<a id="a22b804736f5648d52f639b2647d4ed13" name="a22b804736f5648d52f639b2647d4ed13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22b804736f5648d52f639b2647d4ed13">&#9670;&#160;</a></span>hadc1</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ADC_HandleTypeDef hadc1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel extern">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00056">56</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
