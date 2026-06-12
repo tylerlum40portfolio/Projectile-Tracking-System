@@ -768,11 +768,13 @@ The STM32 controller receives LiDAR data over UART and controls the motors throu
 <li><b>Custom PCB or wiring board:</b> organizes sensor, power, and motor connections</li>
 </ul>
 <div class="figure">
-  <img src="images/full_system.jpg" alt="Fully assembled LiDAR projectile tracking system">
-  <p class="figure-caption">Figure 2. Fully assembled LiDAR projectile tracking prototype.</p>
+  <img src="images/IMG_4881.jpeg" alt="Completed projectile tracking system">
+  <p class="figure-caption">
+    Figure 2. Fully assembled projectile tracking system showing the custom PCB, pan-tilt mechanism, Pixy2 camera, TF-Luna LiDAR sensor, laser module, and supporting mechanical structure.
+  </p>
 </div>
-</div>
-</section>
+```
+
 
 <section id="diagrams">
 <h2>System Diagrams and Additional Analysis</h2>
@@ -1098,14 +1100,13 @@ View Data Structures
 <p>
 System-level diagrams help explain how the firmware and hardware modules interact. They are especially useful because the project combines multiple subsystems that are easier to understand visually.</p>
 <h3>High-Level System Diagram</h3>
-<div class="figure"><img src="images/system_diagram.png" alt="Projectile tracking system diagram"><p class="figure-caption">Figure 6. High-level system diagram showing LiDAR sensing, STM32 processing, and pan/tilt motor output.</p></div>
-<h3>Software Flow Diagram</h3>
-<div class="figure"><img src="images/software_flow.png" alt="Software flow diagram"><p class="figure-caption">Figure 7. Software flow from LiDAR measurement to tracking decision and motor command.</p></div>
-<h3>Why These Diagrams Matter</h3>
-<p>
-The diagrams make it easier to understand the complete system without reading every line of code. They show how sensor data moves through the firmware and eventually becomes a motor command.</p>
+
+<div class="figure">
+  <img src="images/High Level Diagram.png" alt="High-level system diagram">
+  <p class="figure-caption">
+    Figure 6. High-level system architecture showing sensor inputs, STM32 processing, tracking control algorithms, and actuator outputs.
+  </p>
 </div>
-</section>
 
 <section id="results">
 <h2>Analysis and Results</h2>
