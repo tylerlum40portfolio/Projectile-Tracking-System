@@ -872,7 +872,17 @@ The links below open the Doxygen-generated documentation pages for the main proj
 <a href="docs/main_8c.html" target="_blank" class="doc-button"><span class="name">main.c</span></a>
 – Main control loop, PID tracking logic, peripheral initialization, and system integration.
 </li>
+  
+<li>
+<a href="docs/controller_8h.html" target="_blank" class="doc-button"><span class="name">controller.h</span></a>
+– Declares the high-level tracking controller interface, including initialization, update, and reset functions.
+</li>
 
+<li>
+<a href="docs/controller_8c.html" target="_blank" class="doc-button"><span class="name">controller.c</span></a>
+– Implements the pan/tilt PID tracking logic, reads Pixy2 target data, checks LiDAR range, commands the motors, and enables the laser only when the target is centered and in range.
+</li>
+  
 <li>
 <a href="docs/_li_d_a_r_8h.html" target="_blank" class="doc-button"><span class="name">LiDAR.h</span></a>
 – Public LiDAR driver interface, measurement structure, status enum, valid range macros, and function prototypes.
