@@ -208,7 +208,6 @@ This repository contains:
 
 Potential future improvements include:
 
-- PID-based tracking control
 - Position feedback using encoders
 - Improved target prediction algorithms
 - Additional sensor fusion techniques
