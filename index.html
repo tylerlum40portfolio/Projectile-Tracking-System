@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LiDAR Projectile Tracking System Portfolio</title>
+<title>Camera-Guided Projectile Tracking System Portfolio</title>
 
 <style>
 :root{
@@ -524,7 +524,7 @@ footer{
     <div class="brand">
       <div class="logo-mark">◎</div>
       <div>
-        LiDAR Tracker
+        Camera-Guided Tracker
         <small>Project Portfolio</small>
       </div>
     </div>
@@ -532,12 +532,13 @@ footer{
       <a href="#overview">Overview</a>
       <a href="#objectives">Objectives</a>
       <a href="#parameters">Parameters</a>
+      <a href="#build">Build</a>
+      <a href="#wiring">Wiring</a>
       <a href="#design">Design</a>
+      <a href="#schematics">Schematics</a>
       <a href="#implementation">Implementation</a>
       <a href="#code">Code</a>
-      <a href="#docs">Docs</a>
       <a href="#results">Results</a>
-      <a href="#media">Media</a>
       <a href="#video">Video</a>
       <a href="#repository">Repository</a>
     </nav>
@@ -547,10 +548,10 @@ footer{
 <header class="hero">
   <div class="hero-content">
     <div>
-      <div class="hero-kicker">STM32 • LiDAR • Pan/Tilt Control</div>
-      <h1>LiDAR Projectile Tracking System</h1>
+      <div class="hero-kicker">STM32 • Camera Vision • Pan/Tilt Control</div>
+      <h1>Camera-Guided Projectile Tracking System</h1>
       <p>
-        Project portfolio by Tyler Lum, Colby Cordoba, and Sam Nunes documenting an STM32-based projectile tracking system with LiDAR distance sensing, embedded C firmware, UART debugging, and pan/tilt motor control.
+        Project portfolio by Tyler Lum, Colby Cordoba, and Sam Nunes documenting an STM32-based projectile tracking system that uses Pixy2 camera vision for target detection, TF-Luna LiDAR for distance validation, embedded C firmware, UART/SPI communication, laser control, and pan/tilt motor actuation.
       </p>
       <div class="hero-actions">
         <a class="button-link" href="#video">View Demo Video</a>
@@ -562,12 +563,12 @@ footer{
     <div class="hero-panel">
       <h3>System Snapshot</h3>
       <p>
-        The tracker measures object distance, validates sensor data, calculates tracking behavior, and commands the pan/tilt mechanism in real time.
+        The tracker uses camera vision to locate a moving target, validates distance data with LiDAR, calculates tracking error, and commands the pan/tilt mechanism in real time.
       </p>
       <div class="hero-panel-grid">
         <div class="mini-spec"><b>Controller</b><span>STM32 embedded MCU</span></div>
         <div class="mini-spec"><b>Firmware</b><span>Embedded C</span></div>
-        <div class="mini-spec"><b>Sensing</b><span>LiDAR distance data</span></div>
+        <div class="mini-spec"><b>Sensing</b><span>Camera + LiDAR data</span></div>
         <div class="mini-spec"><b>Actuation</b><span>Pan/tilt motor control</span></div>
       </div>
     </div>
@@ -577,10 +578,10 @@ footer{
 <div class="quick-specs">
   <div class="spec-grid">
     <div class="spec-item"><div class="spec-icon">⌖</div><b>Real-Time Tracking</b><span>Target detection loop</span></div>
-    <div class="spec-item"><div class="spec-icon">≋</div><b>LiDAR Sensing</b><span>Distance validation</span></div>
+    <div class="spec-item"><div class="spec-icon">◉</div><b>Camera Vision</b><span>Target localization</span></div>
     <div class="spec-item"><div class="spec-icon">⚙</div><b>Pan/Tilt Control</b><span>PWM motor output</span></div>
     <div class="spec-item"><div class="spec-icon">▣</div><b>STM32 Firmware</b><span>Embedded C drivers</span></div>
-    <div class="spec-item"><div class="spec-icon">▸_</div><b>UART Telemetry</b><span>Debug data stream</span></div>
+    <div class="spec-item"><div class="spec-icon">⌂</div><b>Homing/Search</b><span>Target reacquisition</span></div>
   </div>
 </div>
 
@@ -590,16 +591,16 @@ footer{
 <h2>Project Overview</h2>
 <div class="card">
 <p>
-This project focused on creating a projectile tracking system that can detect a moving target using LiDAR sensors and use that sensor data to command a pan/tilt mechanism. The goal was to build a complete mechatronic system that combined sensing, embedded processing, motor control, and real-time decision making.
+This project focused on creating a projectile tracking system that detects and follows a moving target using data from multiple sensors. A Pixy2 camera provides target position information, while a TF-Luna LiDAR sensor provides distance measurements that help validate whether the target is within the desired tracking range. The goal was to build a complete mechatronic system that combined camera vision, distance sensing, embedded processing, motor control, laser control, and real-time decision making.
 </p>
 <p>
-The system is centered around an STM32 microcontroller. The STM32 receives distance data from the LiDAR sensors, checks whether the readings are valid, determines whether an object is within the tracking region, and then sends commands to the pan and tilt motors. The project required both hardware integration and software organization because the sensors, motors, and communication interfaces all needed to work together reliably.
+The system is centered around an STM32F411CEU6 microcontroller on a custom control PCB. The STM32 receives target-location data from the Pixy2 camera and distance data from the LiDAR sensor, checks whether the sensor readings are valid, determines whether a target is present and within range, and then sends commands to the pan and tilt motors. The project required both hardware integration and software organization because the camera, LiDAR sensor, motor drivers, laser module, power regulation, and communication interfaces all needed to work together reliably.
 </p>
 <p>
-A major focus of this project was modular embedded software. Instead of placing all logic directly in <code>main.c</code>, the code was separated into reusable drivers and control modules. The LiDAR driver handles measurement frames and error checking, while the motor driver handles direction and PWM control for the pan and tilt axes. This made the project easier to debug and better suited for documentation using Doxygen.
+A major focus of this project was modular embedded software. Instead of placing all logic directly in one file, the code was separated into reusable drivers and control modules. The Pixy2 camera driver handles target detection and pixel error calculation, the LiDAR driver handles distance measurement and validation, the motor driver handles direction and PWM control, the laser driver handles safe laser output control, and the controller module supports tracking, homing, search, and limit-protection behavior.
 </p>
 <p>
-Overall, the project demonstrates how a microcontroller-based system can sense a moving object, process the measurement data, and produce actuator commands in real time. The final documentation explains the mechanical design, electrical wiring, embedded firmware, and testing process used to build the projectile tracking system.
+Overall, the project demonstrates how a microcontroller-based system can combine camera vision, distance sensing, feedback signals, and actuator control to follow a moving target in real time. The final documentation explains the mechanical design, custom PCB, electrical wiring, embedded firmware, sensor processing, tracking behavior, homing behavior, and testing process used to build the projectile tracking system.
 </p>
 </div>
 </section>
@@ -608,25 +609,34 @@ Overall, the project demonstrates how a microcontroller-based system can sense a
 <h2>Project Objectives</h2>
 <div class="card">
 <p>
-The main objective was to develop a working projectile tracking prototype that could detect a moving object and command a tracking mechanism without direct manual control. The project was designed to demonstrate embedded sensor integration, motor control, and clean software documentation.
+The main objective was to develop a working projectile tracking prototype that could detect, validate, and follow a moving target using coordinated sensor feedback and embedded control. The project was designed to demonstrate full-system mechatronic integration, including camera-based target detection, LiDAR distance validation, embedded firmware development, motor control, custom electronics, mechanical design, laser control, homing behavior, and technical documentation.
 </p>
 <h3>Primary Functional Goals</h3>
 <ul>
-<li>Read distance measurements from LiDAR sensors</li>
-<li>Validate LiDAR frames and reject bad measurements</li>
-<li>Detect when a projectile or moving object enters the sensor range</li>
-<li>Command pan and tilt motors using PWM and direction signals</li>
-<li>Track the object by adjusting the sensor or aiming mechanism</li>
-<li>Provide UART debugging information during testing</li>
-<li>Organize the code so each subsystem can be tested independently</li>
+<li>Use the Pixy2 camera to detect a moving target and determine its position within the camera frame</li>
+<li>Calculate horizontal and vertical pixel error between the detected target and the center of the image</li>
+<li>Read distance measurements from the TF-Luna LiDAR sensor to determine whether the target is within the desired tracking range</li>
+<li>Validate sensor data by checking LiDAR distance limits, signal strength, and target-detection status before using the data in the controller</li>
+<li>Combine camera position feedback and LiDAR distance data to decide whether a valid target condition is present</li>
+<li>Command the pan and tilt motors using PWM and direction signals generated by the STM32 microcontroller</li>
+<li>Adjust the tracking head in real time so the camera, LiDAR sensor, and laser remain aligned with the moving target</li>
+<li>Use ADC feedback signals to support pan/tilt limit protection and controlled homing behavior</li>
+<li>Use SPI for camera communication, UART for LiDAR communication, and GPIO outputs for motor direction and laser control</li>
+<li>Implement target-loss behavior, including stopping, tilt homing, and search-mode target reacquisition</li>
+<li>Control the laser module through firmware and a transistor driver circuit</li>
+<li>Organize the firmware so each subsystem can be tested, debugged, and documented independently</li>
 </ul>
 <h3>Higher-Level Engineering Goals</h3>
 <ul>
-<li>Develop reusable embedded C drivers</li>
-<li>Use a modular architecture instead of one large control loop</li>
-<li>Document the firmware with Doxygen</li>
-<li>Integrate sensors, motor drivers, and STM32 firmware into one system</li>
-<li>Create a portfolio that explains both what was built and how it works</li>
+<li>Develop reusable embedded C drivers for the camera, LiDAR sensor, motor driver, laser module, and tracking controller</li>
+<li>Use a modular software architecture instead of one large control loop</li>
+<li>Integrate mechanical, electrical, and software subsystems into one working mechatronic prototype</li>
+<li>Design and assemble a custom PCB to organize power distribution, sensor connections, motor driver signals, and STM32 interfaces</li>
+<li>Create custom mechanical mounts for the Pixy2 camera, TF-Luna LiDAR sensor, laser module, PCB, and pan/tilt assembly</li>
+<li>Improve system reliability by separating sensing, validation, control, actuation, homing, laser control, and debugging responsibilities across the firmware</li>
+<li>Document the embedded firmware with Doxygen so source files, functions, data structures, and interfaces are easier to understand</li>
+<li>Validate the complete system through live tracking and homing demonstrations</li>
+<li>Create a project portfolio that explains the design process, system architecture, wiring, code structure, testing, and final results</li>
 </ul>
 </div>
 </section>
@@ -635,26 +645,43 @@ The main objective was to develop a working projectile tracking prototype that c
 <h2>System Parameters</h2>
 <div class="card">
 <p>
-The table below summarizes the major hardware and software parameters for the projectile tracking system. Some values may be adjusted after final testing, but the table gives the main configuration used for the prototype.
+The table below summarizes the major hardware, firmware, sensing, control, and communication parameters for the camera-guided projectile tracking system.
 </p>
 <table class="two-col-table">
 <tr><th>Parameter</th><th>Value</th></tr>
-<tr><td>Controller</td><td>STM32 microcontroller</td></tr>
-<tr><td>Programming Language</td><td>Embedded C</td></tr>
-<tr><td>Sensor Type</td><td>LiDAR distance sensor</td></tr>
-<tr><td>Primary Sensor Interface</td><td>UART</td></tr>
+<tr><td>Controller</td><td>STM32F411CEU6 microcontroller</td></tr>
+<tr><td>Programming Language</td><td>Embedded C using STM32 HAL</td></tr>
+<tr><td>Main Target Sensor</td><td>Pixy2 camera for image-based target detection</td></tr>
+<tr><td>Distance Sensor</td><td>TF-Luna LiDAR sensor for distance measurement and range validation</td></tr>
+<tr><td>Camera Interface</td><td>SPI1 with GPIO chip select</td></tr>
+<tr><td>LiDAR Interface</td><td>USART2 UART, 115200 baud</td></tr>
+<tr><td>Target Signature</td><td>Pixy2 color signature 1</td></tr>
+<tr><td>Camera Frame Size</td><td>316 px × 208 px</td></tr>
+<tr><td>Image Center</td><td>X = 158 px, Y = 104 px</td></tr>
+<tr><td>Camera Deadband</td><td>±18 px in both X and Y</td></tr>
+<tr><td>Minimum Target Area</td><td>30 px²</td></tr>
 <tr><td>Actuation</td><td>Pan and tilt motor control</td></tr>
-<tr><td>Motor Control Signals</td><td>PWM, INA, INB, select/enable pins</td></tr>
+<tr><td>Motor Driver</td><td>Pan and tilt VNH7070ASTRSO driver circuits</td></tr>
+<tr><td>Motor Control Signals</td><td>PWM, INA, INB, SEL0, motor output, feedback, and ground connections</td></tr>
 <tr><td>PWM Timer</td><td>TIM4</td></tr>
-<tr><td>Pan PWM Channel</td><td>TIM4 Channel 3</td></tr>
-<tr><td>Tilt PWM Channel</td><td>TIM4 Channel 4</td></tr>
-<tr><td>Valid Distance Range</td><td>20 cm to 800 cm</td></tr>
-<tr><td>Minimum Valid Signal Strength</td><td>1</td></tr>
+<tr><td>Pan PWM Channel</td><td>TIM4 Channel 3 / PB8</td></tr>
+<tr><td>Tilt PWM Channel</td><td>TIM4 Channel 4 / PB9</td></tr>
+<tr><td>Pan Direction Pins</td><td>PB12 / PAN_INA and PB13 / PAN_INB</td></tr>
+<tr><td>Tilt Direction Pins</td><td>PB14 / TILT_INA and PB15 / TILT_INB</td></tr>
+<tr><td>Motor Select Pins</td><td>PB5 / PAN_SEL0 and PB6 / TILT_SEL0</td></tr>
+<tr><td>Pan/Tilt Feedback</td><td>PA0 / PAN_FB and PA1 / TILT_FB ADC inputs</td></tr>
+<tr><td>LiDAR Valid Distance Range</td><td>20 cm to 800 cm</td></tr>
+<tr><td>Minimum Valid LiDAR Signal Strength</td><td>1</td></tr>
+<tr><td>Laser Range Threshold</td><td>300 cm in controller logic</td></tr>
+<tr><td>Laser Control</td><td>PA8 / LASER_SIGNAL GPIO through transistor driver circuit</td></tr>
+<tr><td>Main Input Supply</td><td>7.5 V input</td></tr>
+<tr><td>Regulated Rails</td><td>5 V module rail and 3.3 V STM32 logic rail</td></tr>
+<tr><td>Programming and Debugging</td><td>SWD interface, USB interface, UART debugging support</td></tr>
 <tr><td>Software Documentation</td><td>Doxygen HTML output</td></tr>
 <tr><td>Development Environment</td><td>STM32CubeIDE / CubeMX</td></tr>
 </table>
 <p class="table-note">
-These parameters are useful when checking the firmware, wiring, and Doxygen documentation against the physical prototype.
+These parameters reflect the updated camera-guided tracking architecture, including Pixy2 vision, TF-Luna LiDAR range validation, pan/tilt motor control, laser control, custom PCB power regulation, and STM32 firmware organization.
 </p>
 </div>
 </section>
@@ -663,29 +690,44 @@ These parameters are useful when checking the firmware, wiring, and Doxygen docu
 <h2>Build Guide</h2>
 <div class="card">
 <p>
-This section outlines the major steps required to assemble and test the LiDAR projectile tracking prototype. The exact mechanical layout can be adjusted, but the same general integration process should be followed.
+This section outlines the major steps required to assemble, wire, program, and test the projectile tracking prototype. The system combines a pan/tilt mechanical assembly, custom PCB, STM32 controller, Pixy2 camera, TF-Luna LiDAR sensor, laser module, motor drivers, and supporting power and communication wiring.
 </p>
 <h3>1. Assemble the Pan/Tilt Structure</h3>
 <p>
-Mount the pan and tilt axes so the sensor or tracking head can rotate smoothly. The mechanism should be stiff enough to avoid vibration but light enough for the motors to move quickly.</p>
-<h3>2. Mount the LiDAR Sensors</h3>
+Mount the pan and tilt axes so the tracking head can rotate smoothly in both horizontal and vertical directions. The structure should be rigid enough to reduce vibration but light enough for the motors to respond quickly. Verify that the rotating components do not interfere with wiring, brackets, or the PCB mount.
+</p>
+<h3>2. Mount the Camera, LiDAR Sensor, and Laser Module</h3>
 <p>
-Install the LiDAR sensor or sensors on the tracking structure. The sensor should face the expected projectile path and should not be blocked by wiring, brackets, or the frame.</p>
-<h3>3. Install the STM32 Controller</h3>
+Install the Pixy2 camera, TF-Luna LiDAR sensor, and laser module on the tracking head so they are aligned with the same target direction. The camera should have a clear field of view, the LiDAR should face the expected target path without obstruction, and the laser should be mounted so it points toward the same aiming reference as the sensors.
+</p>
+<h3>3. Install the Custom PCB and STM32 Controller</h3>
 <p>
-Mount the STM32 board where USB and debugging connections remain accessible. Keep the controller protected from moving parts and make sure the ground connection is shared with the motor driver and sensors.</p>
-<h3>4. Wire the Motor Driver</h3>
+Mount the custom PCB securely to the system frame and connect the STM32 controller so USB, SWD programming, and debugging connections remain accessible. The PCB organizes power distribution, sensor connectors, motor driver signals, laser control, and communication lines between the tracking hardware and the microcontroller.
+</p>
+<h3>4. Wire the Power, Ground, and Motor Driver Connections</h3>
 <p>
-Connect the pan and tilt motor driver inputs to the STM32 PWM and direction pins. Confirm that each motor responds correctly before running the full tracking code.</p>
-<h3>5. Connect LiDAR UART Signals</h3>
+Connect the 7.5 V input supply, onboard 5 V and 3.3 V rails, and the common ground shared by the STM32, sensors, PCB, laser module, and motor drivers. Wire the pan and tilt motor driver inputs to the STM32 PWM, direction, and select pins. Before running the full tracking code, test each motor independently to confirm correct direction and speed response.
+</p>
+<h3>5. Connect Sensor and Communication Interfaces</h3>
 <p>
-Connect LiDAR power, ground, transmit, and receive lines as required. Confirm that voltage levels are compatible with the STM32 before powering the sensor.</p>
-<h3>6. Upload Firmware</h3>
+Connect the TF-Luna LiDAR sensor using its UART transmit, receive, power, and ground lines. Connect the Pixy2 camera using the SPI clock, MISO, MOSI, chip-select, power, and ground connections. Confirm that all voltage levels are compatible with the STM32 and that each sensor has a stable power and ground connection.
+</p>
+<h3>6. Connect and Test the Laser Module</h3>
 <p>
-Build and flash the STM32 firmware. Begin with simple tests such as motor-only motion and LiDAR-only distance readings before enabling full tracking behavior.</p>
-<h3>7. Calibrate and Test</h3>
+Wire the laser module to the PCB and STM32-controlled transistor driver circuit. Test the laser separately before enabling tracking behavior to confirm that it can be turned on and off safely through firmware. The laser control signal should be tested independently from the camera and motor control loop.
+</p>
+<h3>7. Upload and Verify Firmware</h3>
 <p>
-Test the sensor at known distances, verify that invalid measurements are rejected, and tune the tracking response until the system moves smoothly toward the detected target.</p>
+Build and flash the STM32 firmware using STM32CubeIDE. Begin with subsystem-level tests, including motor-only motion, camera target detection, LiDAR distance readings, laser on/off control, ADC feedback checks, and UART debug output. After each subsystem works independently, enable the full tracking control loop.
+</p>
+<h3>8. Calibrate Sensor Alignment and Tracking Response</h3>
+<p>
+Align the camera, LiDAR sensor, and laser so they point toward the same target reference. Test the LiDAR at known distances, verify that invalid measurements are rejected, confirm that the Pixy2 camera correctly reports target position, and tune the tracking response so the pan/tilt assembly moves smoothly toward the detected target without excessive overshoot or vibration.
+</p>
+<h3>9. Perform Full System Testing</h3>
+<p>
+Run live tracking tests with moving targets to verify that the camera detects the object, the STM32 calculates tracking error, the motor drivers command the pan/tilt mechanism, the homing/search behavior responds correctly when the target is lost, and the laser control behaves as expected during demonstrations.
+</p>
 </div>
 </section>
 
@@ -714,34 +756,82 @@ PCB, and pan-tilt assembly.
 <h2>Wiring Diagram and Pin Layout</h2>
 <div class="card">
 <p>
-The projectile tracking system combines LiDAR sensing, motor control, and STM32 firmware. The wiring should be checked carefully because incorrect power or signal connections can damage the controller or sensors.
+The projectile tracking system combines camera vision, LiDAR sensing, laser control, motor drivers, feedback signals, STM32 firmware, and custom PCB power distribution. The wiring should be checked carefully because incorrect power, ground, UART, SPI, GPIO, or motor-driver connections can damage the controller or connected modules.
 </p>
 <h3>Wiring Diagram</h3>
-
 <div class="figure">
   <img src="images/Nice Wiring Diagram.png" alt="Projectile Tracking System Wiring Diagram">
   <p class="figure-caption">
-    Figure 1. Complete wiring diagram showing the custom STM32 control PCB, TF-Luna LiDAR sensor, Pixy2 camera, laser module, pan/tilt motor assembly, SWD programming interface, and power distribution network.
+    Figure 1. Complete wiring diagram showing the custom STM32 control PCB, TF-Luna LiDAR sensor, Pixy2 camera, laser module, pan/tilt motor assembly, SWD programming interface, USB interface, and power distribution network.
   </p>
 </div>
 <h3>Pin Layout Table</h3>
 <table class="wide-table">
-<tr><th>Subsystem</th><th>Signal</th><th>STM32 Pin / Peripheral</th><th>Notes</th></tr>
-<tr><td>LiDAR Sensor</td><td>TX</td><td>UART RX</td><td>Sensor data into STM32</td></tr>
-<tr><td>LiDAR Sensor</td><td>RX</td><td>UART TX</td><td>Optional command path</td></tr>
-<tr><td>LiDAR Sensor</td><td>VCC</td><td>Sensor supply</td><td>Verify required voltage</td></tr>
-<tr><td>LiDAR Sensor</td><td>GND</td><td>GND</td><td>Common ground</td></tr>
-<tr><td>Pan Motor Driver</td><td>PWM</td><td>TIM4 CH3</td><td>Pan speed command</td></tr>
-<tr><td>Pan Motor Driver</td><td>INA / INB</td><td>GPIO outputs</td><td>Pan direction control</td></tr>
-<tr><td>Pan Motor Driver</td><td>SEL0 / Enable</td><td>GPIO output</td><td>Driver mode or enable</td></tr>
-<tr><td>Tilt Motor Driver</td><td>PWM</td><td>TIM4 CH4</td><td>Tilt speed command</td></tr>
-<tr><td>Tilt Motor Driver</td><td>INA / INB</td><td>GPIO outputs</td><td>Tilt direction control</td></tr>
-<tr><td>Tilt Motor Driver</td><td>SEL0 / Enable</td><td>GPIO output</td><td>Driver mode or enable</td></tr>
-<tr><td>Power Supply</td><td>Motor Voltage</td><td>Motor driver VM</td><td>Motor supply input</td></tr>
-<tr><td>Power Supply</td><td>Logic Voltage</td><td>STM32 / sensor logic</td><td>Regulated logic supply</td></tr>
+<tr><th>Subsystem</th><th>Signal / Net</th><th>STM32 Pin / Peripheral</th><th>Notes</th></tr>
+<tr><td>STM32 MCU</td><td>MCU</td><td>STM32F411CEU6</td><td>Main embedded controller for sensor input, motor control, laser control, USB, SWD, and debugging</td></tr>
+<tr><td>STM32 MCU</td><td>VDD</td><td>3.3 V</td><td>Main digital logic supply</td></tr>
+<tr><td>STM32 MCU</td><td>VDDA / VREF+</td><td>3.3 V</td><td>Analog/reference supply</td></tr>
+<tr><td>STM32 MCU</td><td>VSS / VSSA</td><td>GND</td><td>Digital and analog ground reference</td></tr>
+<tr><td>STM32 MCU</td><td>PH0 / PH1</td><td>8 MHz oscillator circuit</td><td>External crystal oscillator input and output</td></tr>
+<tr><td>STM32 MCU</td><td>NRST</td><td>Reset circuit / SWD reset</td><td>Used for reset button and programming reset</td></tr>
+<tr><td>STM32 MCU</td><td>BOOT0</td><td>Boot configuration</td><td>Boot mode selection input</td></tr>
+<tr><td>Pixy2 Camera</td><td>PIXY_CS</td><td>PA4 / GPIO chip select</td><td>SPI chip-select signal for the Pixy2 camera</td></tr>
+<tr><td>Pixy2 Camera</td><td>PIXY_SCK</td><td>PA5 / SPI1 SCK</td><td>SPI clock signal from STM32 to Pixy2 camera</td></tr>
+<tr><td>Pixy2 Camera</td><td>PIXY_MISO</td><td>PA6 / SPI1 MISO</td><td>Camera data sent from Pixy2 to STM32</td></tr>
+<tr><td>Pixy2 Camera</td><td>PIXY_MOSI</td><td>PA7 / SPI1 MOSI</td><td>Command/data signal from STM32 to Pixy2 camera</td></tr>
+<tr><td>Pixy2 Camera</td><td>5 V</td><td>5 V module rail</td><td>Regulated camera power from the PCB</td></tr>
+<tr><td>Pixy2 Camera</td><td>GND</td><td>System ground</td><td>Common ground reference for SPI communication</td></tr>
+<tr><td>TF-Luna LiDAR Sensor</td><td>LIDAR_RX</td><td>PA2 / USART2 TX</td><td>STM32 transmit line connected to the LiDAR receive path</td></tr>
+<tr><td>TF-Luna LiDAR Sensor</td><td>LIDAR_TX</td><td>PA3 / USART2 RX</td><td>LiDAR transmit line connected to the STM32 receive path</td></tr>
+<tr><td>TF-Luna LiDAR Sensor</td><td>5 V</td><td>5 V module rail</td><td>Regulated LiDAR sensor power from PCB</td></tr>
+<tr><td>TF-Luna LiDAR Sensor</td><td>GND</td><td>System ground</td><td>Common ground reference for LiDAR UART communication</td></tr>
+<tr><td>Laser Module</td><td>LASER_EN / LASER_SIGNAL</td><td>PA8 / GPIO output</td><td>STM32 output that drives the laser control transistor</td></tr>
+<tr><td>Laser Module</td><td>5 V</td><td>5 V module rail</td><td>Laser module supply voltage</td></tr>
+<tr><td>Laser Module</td><td>Switched control path</td><td>Q2 transistor circuit</td><td>Laser is controlled through a transistor driver circuit</td></tr>
+<tr><td>Laser Module</td><td>GND</td><td>System ground</td><td>Ground reference for the laser driver circuit</td></tr>
+<tr><td>Pan Motor Assembly</td><td>PAN_MOTOR_A</td><td>Pan motor driver output</td><td>Motor output connection to pan actuator</td></tr>
+<tr><td>Pan Motor Assembly</td><td>PAN_MOTOR_B</td><td>Pan motor driver output</td><td>Motor output connection to pan actuator</td></tr>
+<tr><td>Pan Motor Assembly</td><td>7.5 V</td><td>Motor supply rail</td><td>Motor power supplied to pan assembly</td></tr>
+<tr><td>Pan Motor Assembly</td><td>PAN_FB</td><td>PA0 / ADC channel 0</td><td>Pan-axis feedback signal routed back to STM32</td></tr>
+<tr><td>Pan Motor Assembly</td><td>GND</td><td>System ground</td><td>Common ground reference for pan motor and feedback signal</td></tr>
+<tr><td>Tilt Motor Assembly</td><td>TILT_MOTOR_A</td><td>Tilt motor driver output</td><td>Motor output connection to tilt actuator</td></tr>
+<tr><td>Tilt Motor Assembly</td><td>TILT_MOTOR_B</td><td>Tilt motor driver output</td><td>Motor output connection to tilt actuator</td></tr>
+<tr><td>Tilt Motor Assembly</td><td>7.5 V</td><td>Motor supply rail</td><td>Motor power supplied to tilt assembly</td></tr>
+<tr><td>Tilt Motor Assembly</td><td>TILT_FB</td><td>PA1 / ADC channel 1</td><td>Tilt-axis feedback signal routed back to STM32</td></tr>
+<tr><td>Tilt Motor Assembly</td><td>GND</td><td>System ground</td><td>Common ground reference for tilt motor and feedback signal</td></tr>
+<tr><td>Pan Motor Driver</td><td>PAN_INA</td><td>PB12 / GPIO output</td><td>Pan motor direction control input A</td></tr>
+<tr><td>Pan Motor Driver</td><td>PAN_INB</td><td>PB13 / GPIO output</td><td>Pan motor direction control input B</td></tr>
+<tr><td>Pan Motor Driver</td><td>PAN_PWM</td><td>PB8 / TIM4 CH3</td><td>PWM speed command for pan motor</td></tr>
+<tr><td>Pan Motor Driver</td><td>PAN_SEL0</td><td>PB5 / GPIO output</td><td>Pan motor driver mode select / enable signal</td></tr>
+<tr><td>Pan Motor Driver</td><td>PAN_CS</td><td>Driver current-sense output</td><td>Current-sense output from pan motor driver circuit</td></tr>
+<tr><td>Pan Motor Driver</td><td>PAN_GND</td><td>Driver ground</td><td>Ground reference for pan driver power stage</td></tr>
+<tr><td>Tilt Motor Driver</td><td>TILT_INA</td><td>PB14 / GPIO output</td><td>Tilt motor direction control input A</td></tr>
+<tr><td>Tilt Motor Driver</td><td>TILT_INB</td><td>PB15 / GPIO output</td><td>Tilt motor direction control input B</td></tr>
+<tr><td>Tilt Motor Driver</td><td>TILT_PWM</td><td>PB9 / TIM4 CH4</td><td>PWM speed command for tilt motor</td></tr>
+<tr><td>Tilt Motor Driver</td><td>TILT_SEL0</td><td>PB6 / GPIO output</td><td>Tilt motor driver mode select / enable signal</td></tr>
+<tr><td>Tilt Motor Driver</td><td>TILT_CS</td><td>Driver current-sense output</td><td>Current-sense output from tilt motor driver circuit</td></tr>
+<tr><td>Tilt Motor Driver</td><td>TILT_GND</td><td>Driver ground</td><td>Ground reference for tilt driver power stage</td></tr>
+<tr><td>USB Interface</td><td>VBUS_SENSE</td><td>PA9 / USB VBUS sense</td><td>Detects USB VBUS connection</td></tr>
+<tr><td>USB Interface</td><td>USB_FS_DM</td><td>PA11 / USB D-</td><td>USB full-speed negative data line</td></tr>
+<tr><td>USB Interface</td><td>USB_FS_DP</td><td>PA12 / USB D+</td><td>USB full-speed positive data line</td></tr>
+<tr><td>USB Interface</td><td>GND / Shield</td><td>System ground</td><td>USB ground and shield reference</td></tr>
+<tr><td>SWD Programming Interface</td><td>SWDIO</td><td>PA13 / SWDIO</td><td>Serial Wire Debug data line for programming and debugging</td></tr>
+<tr><td>SWD Programming Interface</td><td>SWCLK</td><td>PA14 / SWCLK</td><td>Serial Wire Debug clock line</td></tr>
+<tr><td>SWD Programming Interface</td><td>SWO</td><td>PB3 / SWO</td><td>Serial Wire Output debug trace signal</td></tr>
+<tr><td>SWD Programming Interface</td><td>RST</td><td>NRST</td><td>Reset line for programming and debugging</td></tr>
+<tr><td>SWD Programming Interface</td><td>3.3 V</td><td>3.3 V reference</td><td>Voltage reference for the debugger/programmer</td></tr>
+<tr><td>SWD Programming Interface</td><td>GND</td><td>System ground</td><td>Debugger ground reference</td></tr>
+<tr><td>Power Input</td><td>7.5 V input</td><td>External barrel/input connector</td><td>Main input supply for motors and onboard regulators</td></tr>
+<tr><td>Power Input</td><td>F1</td><td>Input fuse</td><td>Input protection before power distribution</td></tr>
+<tr><td>Power Regulation</td><td>5 V rail</td><td>LM2575S-5.0 regulator output</td><td>Regulated 5 V supply for external modules</td></tr>
+<tr><td>Power Regulation</td><td>3.3 V rail</td><td>LM2596T-3.3 regulator output</td><td>Regulated 3.3 V logic supply for STM32</td></tr>
+<tr><td>Power Monitoring</td><td>ADC</td><td>PB0 / ADC input</td><td>Schematic-routed voltage monitoring input</td></tr>
+<tr><td>Spare / Expansion Header</td><td>PA10, PA15, PB1, PB2, PB4, PB7, PB10</td><td>Spare STM32 signals</td><td>Routed for expansion or future testing</td></tr>
+<tr><td>System Grounding</td><td>Common Ground</td><td>GND</td><td>All modules share a common ground for reliable communication, sensing, and motor control</td></tr>
 </table>
 <p class="table-note">
-Update the pin names above to match the exact names generated by CubeMX in your final project.</p>
+This table is based on the schematic net labels and the CubeMX-generated STM32 pin definitions. It documents the main connections between the STM32F411CEU6, Pixy2 camera, TF-Luna LiDAR sensor, laser module, pan/tilt motor assemblies, motor drivers, USB interface, SWD programming header, power regulators, and spare expansion pins.
+</p>
 </div>
 </section>
 
@@ -750,204 +840,179 @@ Update the pin names above to match the exact names generated by CubeMX in your 
 <div class="card">
 <h3>Mechanical Design Overview</h3>
 <p>
-The mechanical design is based on a pan/tilt tracking head. The pan axis rotates the system left and right, while the tilt axis adjusts the vertical aim. This layout allows the tracker to follow a projectile or moving object in two directions while keeping the sensing hardware mounted on one compact assembly.
+The mechanical design is based on a two-axis pan/tilt tracking head that allows the system to rotate horizontally and vertically while keeping the sensing and aiming hardware aligned on one compact assembly. The Pixy2 camera, TF-Luna LiDAR sensor, and laser module are mounted together so the camera can locate the target, the LiDAR can validate target distance, and the laser can point along the same tracking direction.
 </p>
 <p>
-Sensor placement is especially important because the LiDAR must have a clear field of view. The sensor should be mounted rigidly and aligned with the center of the tracking direction. Any loose mounting can cause vibration, measurement inconsistency, or poor tracking behavior.
+Sensor alignment was an important part of the mechanical design. The camera needed a clear field of view for target detection, the LiDAR needed an unobstructed path for distance measurement, and the laser needed to be positioned so it remained aligned with the tracking head. Custom mounts were designed to hold the camera, LiDAR sensor, laser module, custom PCB, and pan/tilt structure securely while reducing vibration and keeping the moving assembly compact.
+</p>
+<p>
+The pan/tilt mechanism uses separate pan and tilt motor assemblies to move the tracking head in two directions. The pan axis rotates the system left and right, while the tilt axis adjusts the vertical aim. This layout allows the system to follow a moving target by continuously adjusting the orientation of the camera, LiDAR sensor, and laser together.
 </p>
 <h3>Electrical Design</h3>
 <p>
-The STM32 controller receives LiDAR data over UART and controls the motors through PWM and GPIO outputs. The motor driver handles the higher-current motor load, while the STM32 provides only the command signals. A common ground is required between the STM32, sensor, power supply, and motor driver.</p>
+The electrical system is centered around an STM32F411CEU6 microcontroller on a custom control PCB. The PCB organizes the power regulation, sensor connectors, motor driver circuits, USB interface, SWD programming header, laser driver circuit, and signal routing between the STM32 and external hardware.
+</p>
+<p>
+The Pixy2 camera communicates with the STM32 through SPI and provides target position information inside the camera frame. The TF-Luna LiDAR sensor communicates through UART and provides distance measurements used to validate whether the detected target is within the desired tracking range. The STM32 combines camera target data, LiDAR distance data, and tracking logic to determine how the pan and tilt motors should move.
+</p>
+<p>
+Motor control is handled through dedicated pan and tilt motor driver circuits. The STM32 sends PWM signals for speed control and GPIO direction signals to command each axis. The schematic also includes feedback signals for the pan and tilt assemblies, allowing the system hardware to route position or feedback information back to the controller. The motor drivers handle the higher-current motor load, while the STM32 provides only low-power command signals.
+</p>
+<p>
+The laser module is controlled through a transistor driver circuit instead of being driven directly by the STM32 pin. This allows the firmware to enable or disable the laser through a dedicated laser-control output while keeping the microcontroller protected from the laser load.
+</p>
+<p>
+Power distribution is handled on the custom PCB. The system uses a main 7.5 V input supply, with onboard regulation to generate 5 V for external modules and 3.3 V for STM32 logic. A common ground is shared between the STM32, Pixy2 camera, TF-Luna LiDAR sensor, motor drivers, laser module, USB interface, and programming header to ensure reliable communication and control.
+</p>
 <h3>Major Hardware</h3>
 <ul>
-<li><b>STM32 microcontroller:</b> main embedded controller for sensing and control</li>
-<li><b>LiDAR distance sensor:</b> measures target distance and detects objects</li>
-<li><b>Pan motor:</b> rotates the tracker horizontally</li>
-<li><b>Tilt motor:</b> rotates the tracker vertically</li>
-<li><b>Motor driver:</b> converts STM32 PWM and direction signals into motor power</li>
-<li><b>Custom PCB or wiring board:</b> organizes sensor, power, and motor connections</li>
+<li><b>STM32F411CEU6 microcontroller:</b> main embedded controller for sensor processing, communication, tracking logic, motor commands, laser control, USB, and debugging</li>
+<li><b>Custom control PCB:</b> routes power, ground, sensor signals, motor driver signals, USB, SWD programming, laser control, and spare expansion connections</li>
+<li><b>Pixy2 camera:</b> detects the moving target and provides image-based target position data over SPI</li>
+<li><b>TF-Luna LiDAR sensor:</b> measures target distance and helps validate whether the detected object is within the tracking range</li>
+<li><b>Pan motor assembly:</b> rotates the tracking head horizontally and includes routed motor and feedback connections</li>
+<li><b>Tilt motor assembly:</b> rotates the tracking head vertically and includes routed motor and feedback connections</li>
+<li><b>Motor driver circuits:</b> convert STM32 PWM and GPIO direction signals into higher-current pan and tilt motor outputs</li>
+<li><b>Laser module:</b> provides an aiming reference and is controlled through a transistor driver circuit</li>
+<li><b>Power regulation circuit:</b> converts the main 7.5 V input into regulated 5 V and 3.3 V rails for the system electronics</li>
+<li><b>USB and SWD interfaces:</b> support communication, programming, and debugging of the STM32 firmware</li>
 </ul>
 <div class="figure">
   <img src="images/IMG_4881.jpeg" alt="Completed projectile tracking system">
   <p class="figure-caption">
-    Figure 2. Fully assembled projectile tracking system showing the custom PCB, pan-tilt mechanism, Pixy2 camera, TF-Luna LiDAR sensor, laser module, and supporting mechanical structure.
+    Figure 2. Fully assembled projectile tracking system showing the custom PCB, pan/tilt mechanism, Pixy2 camera, TF-Luna LiDAR sensor, laser module, wiring, and supporting mechanical structure.
   </p>
 </div>
-```
+</div>
+</section>
 
-
-<section id="diagrams">
-<h2>System Diagrams and Additional Analysis</h2>
-
+<section id="schematics">
+<h2>Electrical Schematic and PCB Wiring</h2>
 <div class="card">
-
+<p>
+The schematic and PCB wiring diagrams show how the custom control board routes power, sensor connections, motor-driver signals, USB, SWD programming, laser control, and STM32 I/O. These diagrams support the expanded pin table by showing the physical and electrical relationships between the main hardware blocks.
+</p>
 <h3>Electrical Schematic</h3>
-
 <div class="figure">
 <img src="images/PCB Diagram.png" alt="Electrical Schematic">
 <p class="figure-caption">
 Figure 6. Complete electrical schematic showing power regulation, STM32 connections, motor drivers, LiDAR interface, Pixy2 interface, laser driver circuitry, USB communication, and SWD programming connections.
 </p>
 </div>
-
-<h3>System Wiring Diagram</h3>
-
+<h3>PCB Wiring Diagram</h3>
 <div class="figure">
-<img src="images/PCB Wired Up.png" alt="Wiring Diagram">
+<img src="images/PCB Wired Up.png" alt="PCB wiring diagram">
 <p class="figure-caption">
-Figure 7. High-level wiring diagram illustrating all electrical connections between the PCB, sensors, laser module, pan/tilt assembly, power supply, and programming interface.
+Figure 7. High-level PCB wiring diagram illustrating electrical connections between the PCB, sensors, laser module, pan/tilt assembly, power supply, and programming interface.
 </p>
 </div>
-
 </div>
 </section>
-  
+
 <section id="calculations">
 <h2>Tracking Calculations and Sensor Processing</h2>
-
 <div class="card">
-
 <p>
-Several calculations were performed within the firmware to convert raw sensor measurements into motor commands capable of tracking a moving target. The tracking system combines camera-based target detection, LiDAR distance sensing, and closed-loop motor control to continuously align the pan-tilt mechanism with the detected target.
+Several calculations were performed within the firmware to convert camera target data, feedback readings, and sensor measurements into motor commands capable of tracking a moving target. The system uses Pixy2 camera vision as the primary target-location input, TF-Luna LiDAR distance data as a range-validation input, and pan/tilt feedback readings to support homing and limit protection.
 </p>
-
-<h3>Pixel Error Calculation</h3>
-
+<h3>Camera Pixel Error Calculation</h3>
 <p>
-The Pixy2 camera reports the target location in image coordinates. The firmware calculates horizontal and vertical tracking error by comparing the detected target position to the center of the image:
+The Pixy2 camera reports target blocks in image coordinates. The firmware selects the best target block, compares its position to the center of the image, and calculates horizontal and vertical pixel error:
 </p>
-
 <pre>
 x_error = target_x - image_center_x;
 y_error = target_y - image_center_y;
 </pre>
-
 <p>
-These error values indicate how far the target is from the desired aiming location and serve as the primary inputs to the tracking controller.
+These error values indicate how far the target is from the desired center point and serve as the main inputs for pan and tilt motion.
 </p>
-
-<h3>Proportional Tracking Control</h3>
-
+<h3>Target Filtering</h3>
 <p>
-The tracking errors are converted into motor commands using proportional control:
+The camera driver filters detections by color signature and minimum target area. If multiple valid targets are present, the firmware selects the largest valid block as the target to follow.
 </p>
-
 <pre>
-pan_command  = Kp_pan * x_error;
-tilt_command = Kp_tilt * y_error;
+area = target_width * target_height;
+accept target if signature matches and area >= minimum_target_area;
 </pre>
-
+<h3>Camera-Based Motor Command Generation</h3>
 <p>
-Larger tracking errors generate larger motor commands while smaller errors generate finer positioning adjustments. This allows the system to smoothly move toward the target rather than making abrupt motions.
+The main tracking loop uses camera pixel error, deadbands, speed offsets, command limits, and smoothing before applying motor commands:
 </p>
+<pre>
+if abs(x_error) > x_deadband:
+    pan_speed = -x_error * gain;
 
+if abs(y_error) > y_deadband:
+    tilt_speed = y_error * gain;
+
+command = smoothed_previous_command + new_command;
+</pre>
+<p>
+This approach helps the mechanism move toward the target while reducing sudden changes in speed.
+</p>
 <h3>Motor Command Limiting</h3>
-
 <p>
-To prevent excessive actuator motion and improve stability, motor commands are limited to a maximum allowable value:
+Motor commands are limited to prevent aggressive motion and reduce overshoot or vibration:
 </p>
-
 <pre>
-if (command > MAX_SPEED)
-{
+if command > MAX_SPEED:
     command = MAX_SPEED;
-}
 
-if (command < -MAX_SPEED)
-{
+if command < -MAX_SPEED:
     command = -MAX_SPEED;
-}
 </pre>
-
+<h3>ADC Feedback and Homing Logic</h3>
 <p>
-This prevents aggressive motion that could cause overshoot, oscillation, or mechanical stress.
+Pan and tilt feedback signals are read using ADC inputs. These readings are used for limit protection and tilt homing. When the target is lost for a long enough period, the firmware returns the tilt axis toward a known vertical home range before allowing broader search behavior.
 </p>
-
-<h3>PWM Duty Cycle Generation</h3>
-
-<p>
-The motor driver converts the commanded speed into a PWM duty cycle:
-</p>
-
 <pre>
-PWM = abs(command);
+if tilt_adc is above home range:
+    move tilt toward center;
+else if tilt_adc is below home range:
+    move tilt toward center in opposite direction;
+else:
+    stop tilt motor;
 </pre>
-
-<p>
-The sign of the command determines motor direction while the magnitude determines motor speed. PWM outputs are generated using STM32 Timer 4 channels.
-</p>
-
 <h3>LiDAR Distance Validation</h3>
-
 <p>
-The TF-Luna LiDAR provides distance measurements that are validated before being used by the tracking algorithm:
+The TF-Luna LiDAR driver decodes UART frames, validates the checksum, and checks distance and signal strength before marking a measurement as usable:
 </p>
-
 <pre>
-20 cm < distance < 800 cm
+20 cm <= distance <= 800 cm
+signal_strength >= minimum_threshold
 </pre>
-
 <p>
-Measurements outside this range are rejected to prevent invalid tracking behavior and false detections.
+Distance information is used as a range-validation input so the system can determine whether the detected target is within an acceptable operating range.
 </p>
-
-<h3>Signal Strength Validation</h3>
-
+<h3>Target Centering and Laser Logic</h3>
 <p>
-LiDAR signal strength is also checked before accepting a measurement:
+The camera driver provides a centered check based on the configured X and Y deadbands. This centered condition can be combined with LiDAR range validation to decide when the laser output should be enabled.
 </p>
-
 <pre>
-signal_strength > minimum_threshold
+target_centered =
+    target_detected &&
+    abs(x_error) < x_deadband &&
+    abs(y_error) < y_deadband;
 </pre>
-
-<p>
-This helps reject weak reflections and unreliable measurements that could negatively affect tracking performance.
-</p>
-
-<h3>Target Validation Logic</h3>
-
-<p>
-The firmware combines camera and LiDAR information to determine whether a valid target is present:
-</p>
-
-<pre>
-valid_target =
-    camera_detected &&
-    valid_distance &&
-    valid_signal_strength;
-</pre>
-
-<p>
-Only valid targets are used for tracking calculations and motor control.
-</p>
-
 <h3>Closed-Loop Tracking Behavior</h3>
-
 <p>
-The complete tracking process operates as a real-time feedback loop:
+The tracking process operates as a continuous real-time feedback loop:
 </p>
-
 <pre>
-Target Position
-       ↓
-Pixy2 Detection
+Pixy2 Target Detection
        ↓
 Pixel Error Calculation
        ↓
-Control Calculation
+Motor Command Generation
        ↓
-Motor Command
+ADC Limit Protection + Command Smoothing
+       ↓
+PWM + Direction Output
        ↓
 Pan/Tilt Motion
        ↓
-Updated Target Position
+Updated Camera View
 </pre>
-
-<p>
-This continuous feedback loop allows the system to adjust motor commands in real time and maintain alignment with a moving target.
-</p>
-
 </div>
 </section>
 
@@ -956,23 +1021,46 @@ This continuous feedback loop allows the system to adjust motor commands in real
 <div class="card">
 <h3>Architecture</h3>
 <p>
-The firmware was written using a modular embedded C architecture. The main program initializes the STM32 peripherals, starts PWM outputs, initializes the LiDAR driver, and then repeatedly runs the tracking logic. Separating the code into drivers made the project easier to test and easier to document with Doxygen.</p>
+The firmware was written using a modular embedded C architecture so each major subsystem could be developed, tested, and documented independently. The main program initializes the STM32 system clock, GPIO, timers, PWM outputs, UART, SPI, ADC, camera interface, LiDAR interface, laser control, motor driver module, and tracking controller support functions before running the camera-driven tracking loop.
+</p>
+<p>
+The software is organized around a sensor-driven control loop. The Pixy2 camera provides the primary target position data, the TF-Luna LiDAR driver provides validated range measurements, ADC feedback supports pan/tilt limits and homing, and the motor driver converts tracking commands into PWM and direction outputs. Separating camera processing, distance validation, motor control, laser control, feedback handling, and tracking logic made the firmware easier to debug and document with Doxygen.
+</p>
+<h3>Pixy2 Camera Driver</h3>
+<p>
+The Pixy2 camera driver communicates with the camera over SPI, sends getBlocks requests, validates response packets, decodes color-connected-component blocks, filters by the selected target signature, rejects targets below the minimum area, and selects the largest valid target. The selected target is converted into horizontal and vertical pixel error relative to the image center.
+</p>
 <h3>LiDAR Driver</h3>
 <p>
-The LiDAR driver is responsible for initializing the sensor interface, reading measurement frames, checking for communication errors, validating distance and signal strength, and returning status codes. This allows the rest of the program to use clean functions instead of directly handling every UART detail inside the main loop.</p>
+The TF-Luna LiDAR driver handles UART frame reception, frame-header detection, checksum validation, distance decoding, signal-strength checks, temperature decoding, and status reporting. In the system architecture, LiDAR is used as a distance-validation sensor rather than the primary tracking input.
+</p>
+<h3>Tracking, Homing, and Search Behavior</h3>
+<p>
+The main tracking loop uses camera target data to generate pan and tilt commands. When the target is detected, the firmware applies image deadbands, speed offsets, command clamps, ADC-based limit protection, and smoothing before commanding the pan and tilt motors. When the target is temporarily lost, the system briefly stops the motors to avoid reacting to camera flicker. If target loss continues, the firmware homes the tilt axis toward its vertical reference, and after a longer loss period it enters search mode to help reacquire the target.
+</p>
+<p>
+The controller module also provides PID-based update support, pan/tilt ADC reading functions, tilt homing functions, pan and tilt limit protection, and search-mode behavior. These functions keep homing, limit protection, and tracking support logic separate from low-level motor driver code.
+</p>
 <h3>Motor Driver</h3>
 <p>
-The motor driver abstracts the pan and tilt motor commands. Each motor command is clamped to a safe range, converted into a direction, and then applied using the correct PWM channel. Positive and negative values correspond to opposite directions, while zero stops the motor.</p>
-<h3>Tracking Logic</h3>
+The motor driver abstracts the pan and tilt motor commands. The tracking code sends signed speed commands, and the motor driver clamps each command to the timer range, determines motor direction, and applies the PWM compare value to TIM4 Channel 3 for pan and TIM4 Channel 4 for tilt. Positive and negative values move each axis in opposite directions, while zero stops the motor.
+</p>
+<h3>Laser Control</h3>
 <p>
-The tracking logic uses LiDAR distance readings to decide whether an object is detected. When the object is within the valid tracking range, the firmware updates the pan and tilt motor commands to follow the target. If the measurement is invalid or no object is detected, the system can stop the motors or hold its previous state depending on the selected behavior.</p>
-<h3>UART Debugging</h3>
+The laser module is controlled through a dedicated firmware interface and transistor driver circuit. The laser driver provides initialization, on, off, toggle, and blink-test functions. Keeping the laser in its own module allows the laser hardware to be tested independently from the camera, LiDAR, and motor subsystems.
+</p>
+<h3>Debugging and Test Support</h3>
 <p>
-UART debugging was used to print sensor status, distance readings, motor commands, and error states during testing. This made it much easier to determine whether problems were caused by the sensor, wiring, control logic, or motor output.</p>
+The firmware structure supports debugging by separating camera detection, LiDAR measurement, motor commands, laser output, ADC feedback, homing behavior, and error handling into independent modules. This made it easier to isolate whether an issue came from target detection, sensor communication, wiring, motor output, feedback limits, or laser control.
+</p>
 <details>
 <summary>Click to view simplified software flow</summary>
-<p>LiDAR Sensor → <code>LiDar.c</code> → valid distance measurement → tracking logic → <code>motor_driver.c</code> → pan/tilt motors</p>
-<p>UART Debug Output → distance, status, object detected flag, pan command, tilt command</p>
+<p>Pixy2 Camera → <code>pixy2_camera.c</code> → target block data → pixel error calculation → camera-driven tracking loop</p>
+<p>TF-Luna LiDAR → <code>LiDAR.c</code> → valid distance and signal strength → range-validation support</p>
+<p>ADC Feedback → <code>controller.c</code> → pan/tilt feedback readings → homing and limit protection</p>
+<p>Tracking Logic → target detected / target lost → motor commands, tilt homing, search behavior, and laser state</p>
+<p>Motor Driver → <code>motor_driver.c</code> → PWM and direction outputs → pan/tilt motor motion</p>
+<p>Laser Driver → <code>Laser.c</code> → laser GPIO output and laser test functions</p>
 </details>
 </div>
 </section>
@@ -981,32 +1069,75 @@ UART debugging was used to print sensor status, distance readings, motor command
 <h2>Code Architecture and File-by-File Implementation</h2>
 <div class="card">
 <p>
-The firmware is organized into separate files so each subsystem has a clear responsibility. This structure also improves the Doxygen output because each file can be documented as its own module.</p>
-<h3>Main Integration File</h3>
+The firmware is organized into separate source and header files so each subsystem has a clear responsibility. This structure makes the project easier to debug, test, expand, and document with Doxygen. Instead of placing all functionality inside one file, the system separates initialization, camera processing, LiDAR communication, motor control, laser control, feedback handling, homing, search behavior, and high-level tracking behavior into dedicated modules.
+</p>
+<h3>Main Integration Files</h3>
 <h4><code>main.c</code></h4>
 <p>
-The main file initializes the STM32 system clock, GPIO pins, UART peripherals, timers, PWM channels, LiDAR device structure, and motor driver. It acts as the integration layer that connects all hardware and software modules.</p>
+The main file acts as the central integration layer for the firmware. It initializes the STM32 system clock, GPIO, TIM4 PWM, SPI1, USART2, TIM3, ADC1, the laser module, LiDAR object, motor driver, Pixy2 camera, and controller support logic. The main loop performs the camera-driven tracking behavior, applies X/Y error corrections, handles target loss, performs tilt homing and search behavior, smooths motor commands, applies ADC limit protection, and controls the laser state.
+</p>
+<h4><code>main.h</code></h4>
+<p>
+This CubeMX-generated header defines the project pin map used throughout the firmware. It includes the Pixy2 SPI chip-select and SPI pins, laser signal pin, pan and tilt direction pins, and motor-driver select pins.
+</p>
+<h3>High-Level Controller Files</h3>
+<h4><code>controller.h</code></h4>
+<p>
+This header declares the tracking controller interface, including initialization, update, reset, ADC feedback reading, tilt homing, limit protection, and search-mode functions.
+</p>
+<h4><code>controller.c</code></h4>
+<p>
+This source file implements PID helper functions, pan and tilt ADC feedback reading, tilt homing, pan/tilt limit protection, search mode, and optional full controller update behavior. It supports homing the tilt axis to a known vertical range, stopping pan motion during tilt homing, reversing pan search direction near feedback limits, and combining camera target data with LiDAR range validation and laser enable logic.
+</p>
+<h3>Pixy2 Camera Driver Files</h3>
+<h4><code>pixy2_camera.h</code></h4>
+<p>
+This header defines the Pixy2 frame size, image center, target deadbands, minimum target area, target signature, maximum block count, raw block structure, processed target structure, and public camera functions.
+</p>
+<h4><code>pixy2_camera.c</code></h4>
+<p>
+This source file implements SPI communication with the Pixy2 camera. It sends getBlocks requests, searches for valid response sync bytes, validates packet type and checksum, decodes target blocks, filters blocks by target signature and area, selects the largest valid target, calculates x/y error relative to the image center, and checks whether the target is centered.
+</p>
 <h3>LiDAR Driver Files</h3>
-<h4><code>LiDar.h</code></h4>
+<h4><code>LiDAR.h</code></h4>
 <p>
-This header defines the LiDAR data structure, valid distance limits, status enum, and function prototypes. It is the public interface used by the rest of the firmware.</p>
-<h4><code>LiDar.c</code></h4>
+This header defines the LiDAR measurement structure, status enum, valid distance limits, minimum signal strength, and public functions for initialization, frame reading, measurement validation, object detection, and status-string reporting.
+</p>
+<h4><code>LiDAR.c</code></h4>
 <p>
-This source file implements LiDAR initialization, frame reading, checksum or validity checks, object detection, and status-to-string conversion.</p>
+This source file implements TF-Luna LiDAR UART communication. It searches for the two 0x59 frame header bytes, receives the full 9-byte frame, validates the checksum, decodes distance, signal strength, and temperature, marks the measurement as valid only if it passes the range and signal-strength checks, and returns readable status codes for debugging.
+</p>
 <h3>Motor Driver Files</h3>
 <h4><code>motor_driver.h</code></h4>
 <p>
-This header provides the function prototypes for initializing and commanding the pan and tilt motors.</p>
+This header provides the public interface for initializing and commanding the pan and tilt motors. It exposes functions for motor-driver initialization, pan motor command, tilt motor command, and stopping both motors.
+</p>
 <h4><code>motor_driver.c</code></h4>
 <p>
-This file starts the PWM channels and implements <code>PanMotor_Set()</code>, <code>TiltMotor_Set()</code>, and <code>Motors_Stop()</code>. It converts signed speed commands into PWM duty cycle and direction signals.</p>
-<h3>Possible Tracking Files</h3>
-<h4><code>tracker.h</code> / <code>tracker.c</code></h4>
+This source file starts TIM4 PWM outputs, enables the motor-driver select pins, and implements signed speed commands for the pan and tilt motors. It converts command sign into INA/INB direction states and command magnitude into PWM compare values. Pan uses TIM4 Channel 3, and tilt uses TIM4 Channel 4.
+</p>
+<h3>Laser Control Files</h3>
+<h4><code>Laser.h</code></h4>
 <p>
-These files can be used to separate the projectile tracking algorithm from the hardware drivers. This would keep target detection, error calculation, filtering, and control behavior in one focused module.</p>
+This header defines the public interface for the laser module. It provides function prototypes to initialize, enable, disable, toggle, and blink the laser output.
+</p>
+<h4><code>Laser.c</code></h4>
+<p>
+This source file implements the laser GPIO control logic using the CubeMX-generated LASER_SIGNAL output. The module starts with the laser off, supports on/off control, and includes toggle and blink functions for bench testing.
+</p>
 <h3>How the Files Work Together</h3>
 <p>
-The LiDAR driver produces valid distance data. The tracking logic interprets that data and decides what motor motion is needed. The motor driver then applies those commands to the pan and tilt axes. The main file connects these modules together and runs the real-time loop.</p>
+The Pixy2 camera driver provides target position data and pixel error values. The LiDAR driver provides validated distance and signal-strength data. The controller module provides ADC feedback reading, homing, search, and limit-protection functions. The motor driver converts pan/tilt commands into PWM and direction outputs. The laser driver controls the laser output. The main file initializes all modules and runs the loop that combines target detection, tracking, target-loss handling, homing, search behavior, and actuator control.
+</p>
+<details>
+<summary>Click to view module interaction summary</summary>
+<p><code>main.c</code> initializes the STM32 peripherals and runs the camera-driven tracking loop.</p>
+<p><code>pixy2_camera.c</code> reads Pixy2 blocks, selects the largest valid target, and calculates image-based tracking error.</p>
+<p><code>LiDAR.c</code> reads and validates TF-Luna distance measurements.</p>
+<p><code>controller.c</code> provides PID support, pan/tilt ADC feedback, limit protection, tilt homing, search behavior, and optional range-gated laser logic.</p>
+<p><code>motor_driver.c</code> converts pan/tilt commands into PWM and direction outputs.</p>
+<p><code>Laser.c</code> controls the laser output and provides test functions.</p>
+</details>
 </div>
 </section>
 
@@ -1096,70 +1227,109 @@ View Data Structures
 
 <section id="diagrams">
 <h2>System Diagrams and Additional Analysis</h2>
-
 <div class="card">
-
 <p>
-System-level diagrams help explain how the firmware and hardware modules interact. They are especially useful because the project combines multiple subsystems that are easier to understand visually.
+System-level diagrams help explain how the camera, LiDAR sensor, STM32 firmware, motor drivers, laser module, and pan/tilt hardware interact. The updated flow below focuses on the actual camera-guided tracking behavior, target-loss response, homing behavior, and motor command generation.
 </p>
-
 <h3>High-Level System Diagram</h3>
-
 <div class="figure">
   <img src="images/High Level Diagram.png" alt="High-level system diagram">
   <p class="figure-caption">
-    Figure 6. High-level system architecture showing sensor inputs, STM32 processing, tracking control algorithms, and actuator outputs.
+    Figure 8. High-level system architecture showing Pixy2 camera input, TF-Luna LiDAR range validation, STM32 processing, motor-driver outputs, laser control, and pan/tilt actuation.
   </p>
 </div>
-
 <h3>Software Flow Diagram</h3>
-
-<div class="figure">
-  <img src="images/Software Flow Diagram.png" alt="Software flow diagram">
-  <p class="figure-caption">
-    Figure 7. Software flow from target detection through motor command generation.
-  </p>
+<div class="figure-placeholder">
+<pre>
+System Startup
+      ↓
+Initialize STM32 Peripherals
+(GPIO, TIM4 PWM, TIM3 timing, SPI1, USART2, ADC1)
+      ↓
+Initialize Project Modules
+(Laser, TF-Luna LiDAR, Motor Driver, Pixy2 Camera, Controller)
+      ↓
+Home Tilt Axis to Vertical Reference
+      ↓
+Read Pixy2 Camera Target Blocks
+      ↓
+Apply X/Y Offset Correction
+      ↓
+Target Detected?
+ ┌────────────── No ──────────────┐
+ ↓                                ↓
+Laser Off                         Compute Camera Pixel Error
+Increase Lost Count               x_error, y_error
+ ↓                                ↓
+Lost Count < 8?                   Apply Deadbands
+ ↓                                ↓
+Stop Pan/Tilt Motors              Generate Pan/Tilt Speed Commands
+                                  ↓
+Lost Count 8 to 24?               Clamp Speed Commands
+ ↓                                ↓
+Home Tilt Axis                    Apply ADC Limit Protection
+Keep Pan Stopped                  ↓
+                                  Smooth Commands
+Lost Count ≥ 25?                  ↓
+ ↓                                Apply PWM + Direction Outputs
+Run Search Mode                   to Pan/Tilt Motor Drivers
+(Tilt home first, then pan scan)  ↓
+                                  Laser On During Target Tracking
+                                  ↓
+                                  Repeat Real-Time Loop
+</pre>
 </div>
-
-<h3>Why These Diagrams Matter</h3>
-
-<p>
-These diagrams provide a high-level overview of the firmware architecture and system operation. They illustrate how the Pixy2 camera and TF-Luna LiDAR provide sensor data to the STM32F411, how the tracking algorithm processes that information, and how motor commands are generated to control the pan/tilt mechanism and laser module.
+<p class="figure-caption">
+Figure 9. Updated software flow showing camera-based target detection, pixel-error control, ADC limit protection, command smoothing, target-loss handling, tilt homing, search behavior, laser control, and pan/tilt motor output generation.
 </p>
-
+<h3>Why These Diagrams Matter</h3>
+<p>
+These diagrams provide a high-level overview of the firmware architecture and system operation. They show that the Pixy2 camera is the primary target-tracking input, while the TF-Luna LiDAR supports distance validation. The STM32 processes sensor information, runs tracking and homing behavior, controls the laser output, and commands the pan/tilt mechanism through PWM and direction signals.
+</p>
 </div>
 </section>
 
 <section id="results">
 <h2>Analysis and Results</h2>
-
 <div class="card">
-
 <h3>Overall Performance</h3>
-
 <p>
-The final prototype demonstrated the core behavior required for a projectile tracking system: reading LiDAR distance data, identifying valid measurements, detecting objects within a selected range, and commanding motor motion through the STM32.</p>
-<h3>LiDAR Measurement Performance</h3>
+The final prototype demonstrated the core behavior required for a camera-guided projectile tracking system. The Pixy2 camera detected the target, calculated the target position relative to the center of the image, and provided the primary feedback used to command the pan/tilt mechanism. The STM32 processed this camera data in real time, generated motor commands, and adjusted the tracking head to follow the moving target.
+</p>
+<h3>Camera Vision Performance</h3>
 <p>
-The LiDAR driver improved reliability by checking whether measurements were inside the valid distance range and whether the signal strength was acceptable. This prevented the tracking logic from reacting to clearly bad data.</p>
+The Pixy2 camera was the main sensing input for target detection and tracking. The camera identified target blocks based on the selected color signature, filtered out small detections, selected the largest valid target, and calculated horizontal and vertical pixel error from the center of the camera frame. These pixel error values were used to determine how far the pan and tilt axes needed to move.
+</p>
+<h3>Tracking and Homing Behavior</h3>
+<p>
+The system responded to camera target data by moving the pan and tilt motors to reduce image error and keep the target centered. When the target was temporarily lost, the firmware stopped the motors briefly to avoid reacting to noise or camera flicker. If the target remained lost, the system began returning the tilt axis toward its home position, and after a longer loss period it entered a search behavior to help reacquire the target.
+</p>
 <h3>Motor Response</h3>
 <p>
-The pan and tilt motors responded to signed speed commands from the firmware. The motor driver made the control logic cleaner because the rest of the program could command motion without directly setting every GPIO and PWM register.</p>
+The pan and tilt motors responded to signed speed commands generated from camera pixel error. The firmware applied deadbands, speed limits, command smoothing, and ADC-based safety limits before sending PWM and direction signals to the motor drivers. This helped the mechanism move toward the target while reducing sudden motion, overshoot, and vibration.
+</p>
+<h3>Sensor Validation and Laser Behavior</h3>
+<p>
+Although the camera handled the main target-tracking task, the LiDAR sensor supported the system by providing distance information for range validation. The laser module was controlled separately through firmware and a transistor driver circuit, allowing the laser hardware to be tested and managed independently from the motor and sensor logic.
+</p>
 <h3>Challenges Encountered</h3>
 <ul>
-<li><b>Sensor noise:</b> LiDAR measurements can vary during fast motion or poor alignment</li>
-<li><b>Timing:</b> sensor reads and motor updates must happen fast enough for tracking</li>
-<li><b>Motor tuning:</b> aggressive commands can cause overshoot or vibration</li>
-<li><b>Wiring:</b> UART, power, ground, and PWM connections must be checked carefully</li>
-<li><b>Integration:</b> getting sensing and motor response to work together was harder than testing each piece separately</li>
+<li><b>Camera detection stability:</b> target detection could flicker if lighting, color signature, or target visibility changed</li>
+<li><b>Target centering:</b> the pan/tilt response needed tuning so the target could move toward the center of the camera frame without overshoot</li>
+<li><b>Homing behavior:</b> the system needed a controlled response when the target was lost instead of immediately searching or moving unpredictably</li>
+<li><b>Motor tuning:</b> aggressive speed commands could cause vibration, overshoot, or unstable tracking behavior</li>
+<li><b>Sensor alignment:</b> the camera, LiDAR sensor, and laser needed to be physically aligned so they referenced the same target direction</li>
+<li><b>Integration:</b> coordinating camera vision, motor control, LiDAR validation, laser control, ADC feedback, and custom PCB wiring was more difficult than testing each subsystem separately</li>
 </ul>
 <h3>Future Improvements</h3>
 <ul>
-<li>Add filtering for smoother distance measurements</li>
-<li>Add angle feedback using encoders or potentiometers</li>
-<li>Use a PID controller for pan and tilt positioning</li>
-<li>Improve projectile prediction using velocity estimation</li>
-<li>Add live plots for distance, motor command, and tracking error</li>
+<li>Improve camera filtering to reduce false detections and target flicker</li>
+<li>Add stronger target-selection logic for cases where multiple objects appear in the camera frame</li>
+<li>Tune the pan and tilt control response for smoother centering and less overshoot</li>
+<li>Improve homing and search behavior so the system can reacquire targets more reliably</li>
+<li>Add live debug plots for camera pixel error, motor command, target status, and homing state</li>
+<li>Use LiDAR distance data more deeply in the control logic for range-aware tracking and projectile prediction</li>
+<li>Improve mechanical alignment between the Pixy2 camera, TF-Luna LiDAR sensor, and laser module</li>
 </ul>
 </div>
 </section>
@@ -1310,7 +1480,7 @@ Watch Demo #2 on YouTube
 <h2>Project Repository</h2>
 <div class="card">
 <p>
-The full project repository contains the source code, Doxygen documentation, images, diagrams, and supporting files used for the LiDAR projectile tracking system.</p>
+The full project repository contains the source code, Doxygen documentation, images, diagrams, and supporting files used for the camera-guided projectile tracking system.</p>
 <h3>Key Files</h3>
 <div class="file-links">
 <a href="docs/main_8c.html" target="_blank" class="repo-button">main.c</a>
@@ -1338,9 +1508,11 @@ The full project repository contains the source code, Doxygen documentation, ima
 <h2>External Reference</h2>
 <div class="card">
 <p>
-For external course or project support, include the appropriate instructor, advisor, or teammate contact here.</p>
+For external course or project support, contact one of the project contributors below.
+</p>
 <ul>
 <li><b>Project Contact</b> – <a href="mailto:tylerlum40@gmail.com">tylerlum40@gmail.com</a></li>
+<li><b>Project Contact</b> – Colby Cordoba, <a href="mailto:colbyc0563@gmail.com">colbyc0563@gmail.com</a></li>
 </ul>
 </div>
 </section>
@@ -1348,7 +1520,7 @@ For external course or project support, include the appropriate instructor, advi
 </div>
 
 <footer>
-<p>LiDAR Projectile Tracking System | Colby Cordoba, Tyler Lum, and Sam Nunes</p>
+<p>Camera-Guided Projectile Tracking System | Colby Cordoba, Tyler Lum, and Sam Nunes</p>
 </footer>
 
 </body>
