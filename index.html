@@ -357,7 +357,7 @@ li{margin-bottom:10px;}
 
 .figure img{
   width:100%;
-  max-width:760px;
+  max-width:100%;
   border-radius:14px;
   border:1px solid #e3edf7;
   box-shadow:0 14px 34px rgba(20,48,78,.12);
@@ -760,9 +760,9 @@ The projectile tracking system combines camera vision, LiDAR sensing, laser cont
 </p>
 <h3>Wiring Diagram</h3>
 <div class="figure">
-  <img src="images/Nice Wiring Diagram.png" alt="Projectile Tracking System Wiring Diagram">
+  <img src="images/fig-01-wiring-diagram.png" alt="Projectile Tracking System Wiring Diagram">
   <p class="figure-caption">
-    Figure 1. Complete wiring diagram showing the custom STM32 control PCB, TF-Luna LiDAR sensor, Pixy2 camera, laser module, pan/tilt motor assembly, SWD programming interface, USB interface, and power distribution network.
+    Figure 1. Wiring diagram showing the custom STM32 control PCB, Pixy2 camera, TF-Luna LiDAR sensor, laser module, pan/tilt motor assembly, USB/SWD programming interface, and shared power distribution network.
   </p>
 </div>
 <h3>Pin Layout Table</h3>
@@ -878,9 +878,9 @@ Power distribution is handled on the custom PCB. The system uses a main 7.5 V in
 <li><b>USB and SWD interfaces:</b> support communication, programming, and debugging of the STM32 firmware</li>
 </ul>
 <div class="figure">
-  <img src="images/IMG_4881.jpeg" alt="Completed projectile tracking system">
+  <img src="images/fig-02-completed-prototype.jpg" alt="Completed projectile tracking system">
   <p class="figure-caption">
-    Figure 2. Fully assembled projectile tracking system showing the custom PCB, pan/tilt mechanism, Pixy2 camera, TF-Luna LiDAR sensor, laser module, wiring, and supporting mechanical structure.
+    Figure 2. Fully assembled projectile tracking prototype showing the pan/tilt mechanism, Pixy2 camera, TF-Luna LiDAR sensor, laser module, custom PCB, wiring, and supporting mechanical structure.
   </p>
 </div>
 </div>
@@ -894,16 +894,16 @@ The schematic and PCB wiring diagrams show how the custom control board routes p
 </p>
 <h3>Electrical Schematic</h3>
 <div class="figure">
-<img src="images/PCB Diagram.png" alt="Electrical Schematic">
+<img src="images/fig-06-electrical-schematic.jpg" alt="Electrical Schematic">
 <p class="figure-caption">
-Figure 6. Complete electrical schematic showing power regulation, STM32 connections, motor drivers, LiDAR interface, Pixy2 interface, laser driver circuitry, USB communication, and SWD programming connections.
+Figure 6. Complete electrical schematic showing power regulation, STM32F411CEU6 connections, motor drivers, Pixy2 interface, TF-Luna LiDAR interface, laser driver circuitry, USB communication, and SWD programming connections.
 </p>
 </div>
 <h3>PCB Wiring Diagram</h3>
 <div class="figure">
-<img src="images/PCB Wired Up.png" alt="PCB wiring diagram">
+<img src="images/fig-07-pcb-wiring-diagram.jpg" alt="PCB wiring diagram">
 <p class="figure-caption">
-Figure 7. High-level PCB wiring diagram illustrating electrical connections between the PCB, sensors, laser module, pan/tilt assembly, power supply, and programming interface.
+Figure 7. PCB layout and wiring view showing routed power, signal, sensor, motor-driver, laser, USB, and SWD connections on the custom control board.
 </p>
 </div>
 </div>
@@ -1348,16 +1348,16 @@ The following figures document the design, fabrication, assembly, and integratio
 <div class="figure-row">
 
 <div class="figure">
-<img src="images/PCB Top View 3D.png" alt="PCB Top View">
+<img src="images/fig-08-pcb-top-view.png" alt="PCB Top View">
 <p class="figure-caption">
-Figure 8. Three-dimensional rendering of the PCB top side showing component placement and connector locations.
+Figure 8. Three-dimensional top-side PCB rendering showing component placement, connector locations, and board layout.
 </p>
 </div>
 
 <div class="figure">
-<img src="images/PCB Bottom View 3D.png" alt="PCB Bottom View">
+<img src="images/fig-09-pcb-bottom-view.png" alt="PCB Bottom View">
 <p class="figure-caption">
-Figure 9. PCB bottom side showing trace routing and board layout.
+Figure 9. Three-dimensional bottom-side PCB rendering showing trace routing and underside board layout.
 </p>
 </div>
 
@@ -1383,30 +1383,19 @@ Figure 11. Custom PCB mounted and integrated into the tracking system.
 
 <h3>Custom Mechanical Components</h3>
 
-<div class="figure-row">
-
 <div class="figure">
-<img src="images/Camera Mount.png" alt="Camera Mount">
+<img src="images/fig-12-13-combined-camera-lidar-mounts.jpg" alt="Combined Pixy2 camera and TF-Luna LiDAR mounting brackets">
 <p class="figure-caption">
-Figure 12. Custom Pixy2 camera mounting bracket designed in CAD.
+Figures 12–13. Combined CAD view of the custom Pixy2 camera and TF-Luna LiDAR mounting brackets used to position the sensing hardware on the tracking head.
 </p>
-</div>
-
-<div class="figure">
-<img src="images/Lidar Mount.png" alt="LiDAR Mount">
-<p class="figure-caption">
-Figure 13. Custom LiDAR mounting bracket designed to position the TF-Luna sensor.
-</p>
-</div>
-
 </div>
 
 <div class="figure-row">
 
 <div class="figure">
-<img src="images/Laser Mount.png" alt="Laser Mount">
+<img src="images/fig-14-laser-mount.png" alt="Laser Mount">
 <p class="figure-caption">
-Figure 14. Laser mounting bracket used to align the aiming laser with the tracking system.
+Figure 14. Laser mounting bracket used to align the aiming laser with the camera-guided tracking head.
 </p>
 </div>
 
@@ -1422,9 +1411,9 @@ Figure 15. Structural bracket used to mount the custom PCB to the system frame.
 <h3>Complete System Assembly</h3>
 
 <div class="figure">
-<img src="images/Full 3D Assembly.png" alt="Full Assembly">
+<img src="images/fig-16-full-assembly.png" alt="Full Assembly">
 <p class="figure-caption">
-Figure 16. Full CAD assembly of the projectile tracking system including the pan/tilt mechanism, sensors, PCB, and supporting structure.
+Figure 16. Full CAD assembly of the projectile tracking system including the pan/tilt mechanism, Pixy2 camera, TF-Luna LiDAR sensor, custom PCB, mounts, and supporting structure.
 </p>
 </div>
 
@@ -1488,8 +1477,10 @@ The full project repository contains the source code, Doxygen documentation, ima
 <a href="docs/_li_d_a_r_8h.html" target="_blank" class="repo-button">LiDAR.h</a>
 <a href="docs/motor__driver_8c.html" target="_blank" class="repo-button">motor_driver.c</a>
 <a href="docs/motor__driver_8h.html" target="_blank" class="repo-button">motor_driver.h</a>
-<a href="docs/tracker_8c.html" target="_blank" class="repo-button">tracker.c</a>
-<a href="docs/tracker_8h.html" target="_blank" class="repo-button">tracker.h</a>
+<a href="docs/controller_8c.html" target="_blank" class="repo-button">controller.c</a>
+<a href="docs/controller_8h.html" target="_blank" class="repo-button">controller.h</a>
+<a href="docs/pixy2__camera_8c.html" target="_blank" class="repo-button">pixy2_camera.c</a>
+<a href="docs/_laser_8c.html" target="_blank" class="repo-button">Laser.c</a>
 </div>
 <h3>Key Doxygen Pages</h3>
 <div class="file-links">
